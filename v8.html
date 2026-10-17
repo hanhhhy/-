@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<link rel="stylesheet" id="c2-embedded-cjk" href="styles/01-c2-embedded-cjk.css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>黏性现象仿真实验教学软件</title>
+  <link rel="stylesheet" href="styles/02-base.css">
+  <!-- 本地 Three.js 与 OrbitControls -->
+  <script src="vendor/three.min.js"></script>
+  <!-- 本地 OrbitControls -->
+  <script src="vendor/orbit-controls.js"></script>
+  
+  
+  
+  
+
+<link rel="stylesheet" id="c2-internal-css" href="styles/03-c2-internal-css.css">
+<link rel="stylesheet" id="c2-unified-redesign" href="styles/04-c2-unified-redesign.css">
+<link rel="stylesheet" id="c2-font-stack-lock" href="styles/05-c2-font-stack-lock.css">
+
+<link rel="stylesheet" id="v3-home-tweaks" href="styles/06-v3-home-tweaks.css">
+<link rel="stylesheet" id="fluid-home-hero-style" href="styles/07-fluid-home-hero-style.css">
+<!-- MOBILE-ADAPTER:BEGIN CSS v1.5.0 -->
+<link rel="stylesheet" id="mobile-adapter-css" href="styles/08-mobile-adapter-css.css">
+<link rel="stylesheet" id="mobile-adapter-v7-overrides" href="styles/09-mobile-adapter-v7-overrides.css">
+<!-- MOBILE-ADAPTER:END CSS --><link rel="stylesheet" id="v73-ui-integration" href="styles/10-v73-ui-integration.css">
+<link rel="stylesheet" id="v73-line-right-layout" href="styles/11-v73-line-right-layout.css">
+<script src="src/01-page-events.js"></script>
+<link rel="stylesheet" id="mobile-adapter-v8-layout-fixes" href="styles/12-mobile-adapter-v8-layout-fixes.css"><link rel="stylesheet" id="native-math-css" href="styles/13-native-math-css.css">
+</head>
+<body>
+  
+  <!-- 实验助手：右下角入口与悬浮聊天窗 -->
+  <button id="ai-launcher" type="button" onclick="AIAssistant.open()" aria-controls="ai-panel" aria-expanded="false" aria-label="打开 实验助手">
+    <ai-launcher-mascot aria-hidden="true"></ai-launcher-mascot>
+    <span class="ai-launcher-label">实验助手</span>
+  </button>
+  <div id="ai-panel" role="dialog" aria-label="实验助手" aria-hidden="true" inert>
+    <div id="ai-panel-header" class="ai-reveal-item">
+      <div class="ai-panel-heading"><strong>实验助手</strong><span>本地知识 · 实验引导</span></div>
+      <div class="ai-actions">
+        <button id="ai-new-chat-btn" type="button" onclick="AIAssistant.clearChat()" title="新建会话" aria-label="新建会话"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg></button>
+        <button id="ai-size-btn" type="button" onclick="AIAssistant.toggleDock()" title="浮层" aria-label="浮层" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M12 5v14"/></svg></button>
+        <button type="button" onclick="AIAssistant.close()" title="关闭" aria-label="关闭 实验助手"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+      </div>
+    </div>
+    <div id="ai-messages" class="ai-reveal-item">
+      <div class="ai-intro" id="ai-intro">
+        <div class="ai-hero">
+          <span class="ai-hero-greeting">Hi～</span>
+          <h4>我是流体 实验助手</h4>
+          <p>遇到实验问题，直接告诉我就好</p>
+          <span class="ai-hero-avatar" aria-hidden="true"><video autoplay muted loop playsinline src="assets/f23244e077856102.webm"></video></span>
+        </div>
+        <div class="ai-suggest" id="ai-suggest"></div>
+        <button class="ai-suggest-refresh" type="button" onclick="AIAssistant.refreshSuggestions()" aria-label="换一批推荐问题"><span aria-hidden="true">⟳</span> 换一批</button>
+      </div>
+    </div>
+    <div id="ai-input-area" class="ai-reveal-item">
+      <div id="ai-quick-menu" aria-label="快捷问题"></div>
+
+      <!-- Ask：需补充实验目标时，显示可键盘操作的选择面板 -->
+      <div id="ai-ask-card" role="group" aria-labelledby="ai-ask-question" hidden>
+        <div class="ai-ask-head">
+          <div class="ai-ask-copy"><span class="ai-ask-eyebrow">需要补充一个选择</span><span class="ai-ask-question" id="ai-ask-question"></span></div>
+          <button class="ai-ask-close" type="button" onclick="AIAssistant.dismissAsk()" aria-label="忽略这个提问" title="忽略">✕</button>
+        </div>
+        <div class="ai-ask-options" id="ai-ask-options"></div>
+        <label class="ai-ask-custom-label" for="ai-ask-input">或者用自己的话告诉我</label>
+        <div class="ai-ask-custom">
+          <input type="text" id="ai-ask-input" placeholder="输入其他选择…" aria-label="自定义输入">
+          <button type="button" id="ai-ask-send" class="ai-ask-go">确认</button>
+        </div>
+      </div>
+
+      <div id="ai-input-row">
+        <textarea id="ai-user-input" rows="2" placeholder="本地知识问答、当前数据或单步实验指令…" aria-label="输入给 实验助手的问题" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();AIAssistant.send()}"></textarea>
+        <div class="ai-input-actions">
+          
+                    
+          <button id="ai-quick-btn" type="button" onclick="AIAssistant.toggleQuickMenu()" title="快捷问题" aria-label="显示快捷问题" aria-controls="ai-quick-menu" aria-expanded="false"><span class="ai-quick-symbol" aria-hidden="true">＋</span>快捷提问</button>
+          <button id="ai-send-btn" type="button" onclick="AIAssistant.send()" title="发送" aria-label="发送消息" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></button>
+        </div>
+      </div>
+      <div id="ai-input-hint">本地知识库回答 · 请结合实验条件判断</div>
+    </div>
+  </div>
+
+
+<!-- 运行时错误收集与诊断面板 -->
+<div id="dshErrPanel" hidden style="position:fixed;left:10px;bottom:10px;z-index:99999;max-width:min(520px,92vw);max-height:40vh;overflow:auto;padding:10px 12px;border-radius:10px;background:#2a0f14;color:#ffd9de;font:12px/1.6 Consolas,Menlo,monospace;box-shadow:0 10px 30px rgba(0,0,0,.45)"></div>
+<script id="v6-error-collector" src="src/02-v6-error-collector.js"></script>
+<div id="app">
+  <!-- 首页 -->
+  <div id="homePage" class="page home-page" style="display: flex;">
+    <!-- 顶部工具栏；品牌图标由接入层挂载 -->
+    <nav class="home-nav-bar">
+      <div class="right-group">
+        <button class="qr-btn" id="homeQrBtn" title="扫码访问">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            <path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 17v4"></path>
+          </svg>
+          扫码访问
+        </button>
+
+        <button class="nav-item" id="homeThemeBtn" type="button" title="切换深色模式（快捷键 T）">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path>
+          </svg>
+          <span id="homeThemeLabel">浅色</span>
+        </button>
+
+      </div>
+    </nav>
+
+    <!-- Hero 大图：标题压在图上 -->
+    <header class="home-hero">
+      <div class="hero-inner">
+        <div class="hero-tag">Fluid Mechanics Simulation Lab</div>
+        <h1 class="home-title">黏性现象仿真实验教学软件</h1>
+        <p class="home-subtitle">通过交互式物理实验深化对黏性现象的理解</p>
+      </div>
+    </header>
+
+    <!-- 三个实验入口 -->
+    <section class="home-experiments">
+      
+      <div class="experiment-cards">
+        <div class="experiment-card" data-experiment="newton">
+          <div class="card-media"><img src="assets/73e62a5c816ef433.jpg" alt="旋转黏度计测量液体黏度"></div>
+          <div class="card-body">
+            <h3 class="card-title">牛顿黏性定律实验</h3>
+            <p class="card-desc">探索牛顿黏性定律<br>理解剪切应力与速度梯度的关系</p>
+          </div>
+          <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></span>
+        </div>
+        
+        <div class="experiment-card" data-experiment="poiseuille">
+          <div class="card-media"><img src="assets/0c8125adf717bd76.jpg" alt="毛细管层流实验装置"></div>
+          <div class="card-body">
+            <h3 class="card-title">泊肃叶定律实验</h3>
+            <p class="card-desc">研究管道中的层流流动<br>掌握流量与压降的关系</p>
+          </div>
+          <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></span>
+        </div>
+        
+        <div class="experiment-card" data-experiment="stokes">
+          <div class="card-media"><img src="assets/d2b30b9bbe4707dc.jpg" alt="黏性流体中的球体与颗粒"></div>
+          <div class="card-body">
+            <h3 class="card-title">斯托克斯定律实验</h3>
+            <p class="card-desc">观察球体在黏性流体中的沉降<br>学习阻力计算公式</p>
+          </div>
+          <span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 首页底部探究入口：文案、配图和实验选择按钮 -->
+    <section class="home-ai-hero" id="homeAiHero">
+      <div class="ai-hero-inner">
+        <div class="ai-hero-copy">
+          <div class="ai-hero-tag">探究式学习 · INQUIRY-BASED LEARNING</div>
+          <h2 class="ai-hero-title">引导学生进行探究性学习</h2>
+          <p class="ai-hero-sub">从现象出发，提出问题、设计实验、采集证据、交流论证——让每一次流体实验都成为真正的探究。</p>
+          <div class="ai-hero-actions">
+            <button class="hero-ai-btn" id="heroAiGuideBtn" type="button" onclick="FluidHero.openGuide({ source: 'hero' })">
+              <span class="hero-ai-btn-text">帮我探究</span>
+            </button>
+            <span class="hero-ai-hint">本地助手提供引导，结论由学生自己得出</span>
+          </div>
+        </div>
+        <div class="ai-hero-media">
+          <img class="ai-hero-img" alt="两名学生在实验台前协作调试电路"
+               src="assets/22e37fd943b298aa.jpg">
+        </div>
+      </div>
+    </section>
+
+    <!-- 主题开关：隐藏但真实存在，主题系统与快捷键 T 都依赖它 -->
+    <input type="checkbox" id="themeToggle" class="theme-toggle-proxy" tabindex="-1" aria-hidden="true">
+  </div>
+
+  <!-- 实验页面 -->
+  <div id="experimentPage" class="page experiment-page" style="display: none;">
+    <div class="experiment-layout">
+      <!-- 左侧可折叠菜单 -->
+      <aside class="sidebar collapsed" id="sidebar">
+        <button class="toggle-btn" id="toggleSidebar">◀</button>
+        <div class="menu-container" id="menuContainer">
+          <button class="menu-item active" data-page="principle">原理</button>
+          <button class="menu-item" data-page="lineSim">线图模拟</button>
+          <button class="menu-item" data-page="3dSim">3D 模拟</button>
+        </div>
+      </aside>
+
+      <!-- 右侧内容区 -->
+      <main class="main-content">
+        <!-- 实验导航栏 -->
+        <nav class="experiment-nav">
+          <button class="back-btn" id="backBtn">← 返回首页</button>
+          <h2 class="experiment-title" id="experimentTitle">泊肃叶定律实验</h2>
+          <div class="nav-right">
+            <button class="qr-btn" id="expQrBtn" title="扫码访问">
+
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="qr-icon-svg"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 17v4"></path></svg> 扫码访问
+            </button>
+          </div>
+        </nav>
+
+        <!-- 内容区 -->
+        <div class="content-area">
+          <!-- 原理页面 -->
+          <div id="principlePage" class="sub-page active">
+      <div class="principle-content">
+        <h2 style="color: #1a3c7c">泊肃叶定律实验</h2>
+        
+        <div class="principle-section" style="background: #f8fbff; border-color: #e1e8f0; border-left: 4px solid #e1e8f0;">
+          <h3 style="color: #1a3c7c">实验简介</h3>
+          <p style="color: #495057">泊肃叶定律描述了不可压缩黏性流体在圆管中做层流运动时的流量规律。该定律在医学（血液流动）、工程（管道设计）等领域有重要应用。</p>
+        </div>
+        
+        <div class="principle-section" style="background: #f8fbff; border-color: #e1e8f0; border-left: 4px solid #e1e8f0;">
+          <h3 style="color: #1a3c7c">泊肃叶定律</h3>
+          <div class="formula-box">Q = πR⁴ΔP / (8μL)</div>
+          <p style="color: #495057"><strong>其中：</strong></p>
+          <ul class="variable-list">
+            <li><strong>Q</strong>: 体积流量 (m³/s)</li><li><strong>vmax</strong>: 最大速度 (m/s)</li><li><strong>Rf</strong>: 流阻 (Pa·s/m³)</li><li><strong>Re</strong>: 雷诺数</li><li><strong>v_avg</strong>: 平均速度 (m/s)</li>
+          </ul>
+        </div>
+        
+        <div class="principle-section" style="background: #f8fbff; border-color: #e1e8f0; border-left: 4px solid #e1e8f0;">
+          <h3 style="color: #1a3c7c">实验装置</h3>
+          <p style="color: #495057">实验装置主要包括：</p>
+          <ol style="color: #495057; padding-left: 20px;">
+            <li>水平圆管，透明材质便于观察</li>
+            <li>压力源，提供稳定的压差</li>
+            <li>流量计，测量流体流量</li>
+            <li>压力计，测量管道两端压力</li>
+          </ol>
+        </div>
+        
+        <div class="principle-section" style="background: #f8fbff; border-color: #e1e8f0; border-left: 4px solid #e1e8f0;">
+          <h3 style="color: #1a3c7c">关键概念</h3>
+          <p style="color: #495057">• <strong>层流</strong>：流体分层流动，各层互不混合</p>
+          <p style="color: #495057">• <strong>雷诺数</strong>：判断流动状态的无量纲数</p>
+          <p style="color: #495057">• <strong>速度分布</strong>：圆管中层流的速度呈抛物线分布</p>
+          <p style="color: #495057">• <strong>压降</strong>：流体流动过程中压力的损失</p>
+        </div>
+      </div>
+    </div>
+          
+          <!-- 线图模拟页面 -->
+          <div id="lineSimPage" class="sub-page">
+    <div class="line-sim-layout" id="normalLayout">
+      <!-- 左侧控制面板 -->
+      <div class="control-panel">
+        <h3>参数控制</h3>
+        
+        <div id="paramsContainer">
+    <div class="param-group">
+      <div class="param-label">
+        <span class="param-symbol">R - 管道半径</span>
+        <span class="param-value" id="radiusValue">2×10⁻³</span>
+      </div>
+      <input type="range" id="radius" min="0.0005" max="0.005" step="0.0001" value="0.002">
+      <div style="font-size: 11px; color: var(--text-hint); text-align: right;">m</div>
+    </div>
+  
+    <div class="param-group">
+      <div class="param-label">
+        <span class="param-symbol">L - 管道长度</span>
+        <span class="param-value" id="lengthValue">1×10⁰</span>
+      </div>
+      <input type="range" id="length" min="0.1" max="2" step="0.05" value="1">
+      <div style="font-size: 11px; color: var(--text-hint); text-align: right;">m</div>
+    </div>
+  
+    <div class="param-group">
+      <div class="param-label">
+        <span class="param-symbol">ΔP - 压强差</span>
+        <span class="param-value" id="pressureValue">1×10³</span>
+      </div>
+      <input type="range" id="pressure" min="102" max="105" step="0.01" value="1000">
+      <div style="font-size: 11px; color: var(--text-hint); text-align: right;">Pa</div>
+    </div>
+  
+    <div class="param-group">
+      <div class="param-label">
+        <span class="param-symbol">μ - 动力黏度</span>
+        <span class="param-value" id="viscosityValue">1×10⁻³</span>
+      </div>
+      <input type="range" id="viscosity" min="0.00005" max="2" step="0.00005" value="0.001">
+      <div style="font-size: 11px; color: var(--text-hint); text-align: right;">Pa·s</div>
+    </div>
+  
+    <div class="param-group">
+      <div class="param-label">
+        <span class="param-symbol">ρ - 流体密度</span>
+        <span class="param-value" id="densityValue">1×10³</span>
+      </div>
+      <input type="range" id="density" min="0.05" max="1500" step="0.5" value="1000">
+      <div style="font-size: 11px; color: var(--text-hint); text-align: right;">kg/m³</div>
+    </div>
+  </div>
+        
+        
+          <div class="fluid-presets">
+            <h4>流体预设</h4>
+            <div class="preset-grid" id="presetGrid">
+      <button class="preset-btn" data-fluid="氢气 (20°C)">氢气 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="氦气 (0°C)">氦气 (0°C)</button>
+    
+      <button class="preset-btn" data-fluid="空气 (20°C)">空气 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="乙醚 (20°C)">乙醚 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="苯 (20°C)">苯 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="丙酮 (20°C)">丙酮 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="甲醇 (20°C)">甲醇 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="汽油 (20°C)">汽油 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="煤油 (20°C)">煤油 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="水 (20°C)">水 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="酒精 (20°C)">酒精 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="牛奶 (20°C)">牛奶 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="血液 (37°C)">血液 (37°C)</button>
+    
+      <button class="preset-btn" data-fluid="玉米油 (20°C)">玉米油 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="橄榄油 (20°C)">橄榄油 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="蓖麻油 (20°C)">蓖麻油 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="甘油 (20°C)">甘油 (20°C)</button>
+    
+      <button class="preset-btn" data-fluid="糖浆 (20°C)">糖浆 (20°C)</button>
+    </div>
+          </div>
+        
+      </div>
+      
+      <!-- 中央动画画布 -->
+      <div class="canvas-area">
+        <canvas id="simCanvas"></canvas>
+        <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:10;">
+          <button class="ctrl-btn" id="btn-report" title="根据你的实际操作生成实验报告：记录参数调节、仿真过程与流体切换，并绘制对应的实测曲线（按钮上的数字为已记录的数据点数）" style="background:#5b6abf;color:#fff;font-size:12px;padding:5px 16px;">导出实验报告</button>
+        </div>
+      </div>
+      
+      <!-- 右侧数据面板 -->
+      <div class="data-panel">
+        <h3>实时数据</h3>
+        <div id="reynoldsWarning" style="display: none; margin-bottom: 10px;"></div>
+        <div id="dataContainer">
+      <div class="data-card">
+        <div class="data-label">体积流量</div>
+        <div class="data-value">
+          6.597×10⁻⁷
+          <span class="data-unit">m³/s</span>
+        </div>
+      </div>
+    
+      <div class="data-card">
+        <div class="data-label">最大速度</div>
+        <div class="data-value">
+          1.05×10⁻¹
+          <span class="data-unit">m/s</span>
+        </div>
+      </div>
+    
+      <div class="data-card">
+        <div class="data-label">流阻</div>
+        <div class="data-value">
+          1.592×10⁸
+          <span class="data-unit">Pa·s/m³</span>
+        </div>
+      </div>
+    
+      <div class="data-card">
+        <div class="data-label">雷诺数</div>
+        <div class="data-value">
+          2.1×10²
+          <span class="data-unit"></span>
+        </div>
+      </div>
+    
+      <div class="data-card">
+        <div class="data-label">平均速度</div>
+        <div class="data-value">
+          5.25×10⁻²
+          <span class="data-unit">m/s</span>
+        </div>
+      </div>
+    </div>
+
+        
+        <!-- 实时图表 -->
+        <div class="chart-container">
+          <canvas id="realtimeChart"></canvas>
+        </div>
+        <div id="taskGuideHost"></div>
+        
+        <div class="bottom-controls">
+          <button class="ctrl-btn play-pause" id="playPauseBtn">开始</button>
+          <button class="ctrl-btn reset" id="resetBtn">重置</button>
+          <button class="mode-toggle-btn" id="compareToggleBtn" title="三组独立参数对比">开启对比模式</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 对比模式容器（默认隐藏） -->
+    <div id="compare-container" style="display:none;flex-direction:column;gap:14px;"></div>
+  </div>
+
+          <!-- 3D模拟页面 -->
+          <div id="3dSimPage" class="sub-page">
+            <div style="display:flex;height:100%;gap:0;">
+              <!-- 3D画布容器 -->
+              <div id="canvas-container" style="flex:1;position:relative;"></div>
+
+              <!-- 右侧控制面板 -->
+              <div class="control-panel" style="width:240px;padding:10px;overflow-y:auto;">
+
+                <!-- 牛顿粘性定律控制面板 -->
+                <div class="scene-panel active" id="panel-newton">
+                  <div class="panel-section">
+                    <h3>实验控制</h3>
+                    <div class="btn-group">
+                      <button class="action-btn" id="newton-start">开始实验</button>
+                      <button class="action-btn stop" id="newton-stop" disabled>停止实验</button>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>参数控制</h3>
+
+                    <div class="control-group">
+                      <label>粘滞系数 η (Pa·s)</label>
+                      <input type="range" id="newton-viscosity" min="0.1" max="10" step="0.1" value="1">
+                      <div class="value-display" id="newton-viscosity-val">1.0 Pa·s</div>
+                    </div>
+
+                    <div class="control-group">
+                      <label>顶板速度 v (m/s)</label>
+                      <input type="range" id="newton-velocity" min="0.1" max="5" step="0.1" value="2">
+                      <div class="value-display" id="newton-velocity-val">2.0 m/s</div>
+                    </div>
+
+                    <div class="control-group">
+                      <label>板间距 Δy (m)</label>
+                      <input type="range" id="newton-gap" min="0.5" max="3" step="0.1" value="1">
+                      <div class="value-display" id="newton-gap-val">1.0 m</div>
+                    </div>
+
+                    <div class="control-group">
+                      <label>顶板面积 A (m²)</label>
+                      <input type="range" id="newton-area" min="0.2" max="1" step="0.05" value="1">
+                      <div class="value-display" id="newton-area-val">1.0 m²</div>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>实时数据</h3>
+                    <div class="stat-grid">
+                      <div class="stat-card">速度梯度<span class="value" id="newton-gradient">2.0</span> s⁻¹</div>
+                      <div class="stat-card">剪切应力<span class="value" id="newton-stress">2.0</span> Pa</div>
+                      <div class="stat-card" style="grid-column: 1 / -1;">内摩擦力<span class="value" id="newton-force">2.0</span> N</div>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>流动区域划分</h3>
+                    <div class="stat-grid" style="margin-bottom: 6px;">
+                      <div class="stat-card" style="background: rgba(0, 100, 255, 0.2); border-color: rgba(0, 100, 255, 0.5);">
+                        <span style="color: #00aaff;">低速区</span>
+                        <span class="value" style="color: #00aaff;">底板附近</span>
+                      </div>
+                      <div class="stat-card" style="background: rgba(255, 50, 100, 0.2); border-color: rgba(255, 50, 100, 0.5);">
+                        <span style="color: #ff3366;">高速区</span>
+                        <span class="value" style="color: #ff3366;">顶板附近</span>
+                      </div>
+                    </div>
+                    <div class="legend">
+                      <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(90deg, #0066ff, #00aaff);"></div>
+                        <span>低速层</span>
+                      </div>
+                      <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(90deg, #ff3366, #ff6699);"></div>
+                        <span>高速层</span>
+                      </div>
+                      <div class="legend-item">
+                        <div class="legend-color" style="background: #00ff88;"></div>
+                        <span>速度梯度</span>
+                      </div>
+                      <div class="legend-item">
+                        <div class="legend-color" style="background: #ffaa00;"></div>
+                        <span>内摩擦力</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="action-btn" id="newton-reset">重置场景</button>
+                </div>
+
+                <!-- 泊肃叶定律控制面板 -->
+                <div class="scene-panel" id="panel-poiseuille">
+                  <div class="panel-section">
+                    <h3>实验控制</h3>
+                    <div class="btn-group">
+                      <button class="action-btn" id="poiseuille-start">开始实验</button>
+                      <button class="action-btn stop" id="poiseuille-stop" disabled>停止实验</button>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>参数控制</h3>
+
+                    <div class="control-group">
+                      <label>管道半径 R (mm)</label>
+                      <input type="range" id="poiseuille-radius" min="0.5" max="5" step="0.1" value="2.5">
+                      <div class="value-display" id="poiseuille-radius-val">2.5 mm</div>
+                    </div>
+
+                    <div class="control-group">
+                      <label>压强差 ΔP (Pa)</label>
+                      <input type="range" id="poiseuille-pressure" min="10" max="500" step="1" value="100">
+                      <div class="value-display" id="poiseuille-pressure-val">100 Pa</div>
+                    </div>
+
+                    <div class="control-group">
+                      <label>粘滞系数 η (mPa·s)</label>
+                      <input type="range" id="poiseuille-viscosity" min="1" max="8" step="0.5" value="2">
+                      <div class="value-display" id="poiseuille-viscosity-val">2.0 mPa·s</div>
+                    </div>
+
+                    <div class="control-group">
+                      <label>管道长度 L (m)</label>
+                      <input type="range" id="poiseuille-length" min="0.1" max="2" step="0.1" value="1">
+                      <div class="value-display" id="poiseuille-length-val">1.0 m</div>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>实时数据</h3>
+                    <div class="stat-grid">
+                      <div class="stat-card">体积流量 Q<span class="value" id="poiseuille-flow">0.00</span> mL/s</div>
+                      <div class="stat-card">最大流速 <i>v</i><sub>max</sub><span class="value" id="poiseuille-vmax">0.00</span> cm/s</div>
+                      <div class="stat-card" style="grid-column: 1 / -1;">平均流速 <i>v</i><sub>avg</sub><span class="value" id="poiseuille-vavg">0.00</span> cm/s</div>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>雷诺数监测</h3>
+                    <div class="reynolds-gauge">
+                      <div class="reynolds-indicator" id="reynolds-indicator" style="left: 10%;"></div>
+                    </div>
+                    <div class="stat-grid" style="margin-top: 6px;">
+                      <div class="stat-card" style="grid-column: 1 / -1;">Re = <span class="value" id="poiseuille-reynolds">0</span></div>
+                      <div class="stat-card" style="grid-column: 1 / -1; text-align: center;">
+                        <span class="status-indicator status-laminar" id="flow-status">层流状态</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>粒子颜色说明</h3>
+                    <div style="font-size:0.6rem; color:rgba(255,255,255,0.8);">
+                      <div style="position:relative; width:100%; height:14px; border-radius:5px; background:linear-gradient(90deg, #0044ff, #00aaff, #00ff88, #ffff00, #ff8800, #ff0000); margin-bottom:4px;"></div>
+                      <div style="display:flex; justify-content:space-between; font-size:0.55rem; color:rgba(255,255,255,0.7);">
+                        <span>慢 (蓝)</span>
+                        <span>快 (红)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="action-btn" id="poiseuille-reset">重置场景</button>
+                </div>
+
+                <!-- 斯托克斯定律控制面板 -->
+                <div class="scene-panel" id="panel-stokes">
+                  <div class="panel-section">
+                    <h3>实验控制</h3>
+                    <div class="btn-group">
+                      <button class="action-btn" id="stokes-start">开始实验</button>
+                      <button class="action-btn stop" id="stokes-stop" disabled>停止实验</button>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>参数控制</h3>
+
+                    <div class="control-group">
+                      <label>球体半径 R (mm)</label>
+                      <input type="range" id="stokes-radius" min="0.5" max="3" step="0.1" value="2.0">
+                      <div class="value-display" id="stokes-radius-val">2.0 mm</div>
+                    </div>
+
+                    <div class="control-group">
+                      <label>流体粘度 η (Pa·s)</label>
+                      <input type="range" id="stokes-viscosity" min="0.5" max="3" step="0.1" value="1.0">
+                      <div class="value-display" id="stokes-viscosity-val">1.000 Pa·s</div>
+                    </div>
+                  </div>
+
+                  <div class="panel-section">
+                    <h3>实时数据</h3>
+                    <div class="stat-grid">
+                      <div class="stat-card">重力 G<span class="value" id="stokes-gravity-val">0.00</span> mN</div>
+                      <div class="stat-card">浮力 F<sub>b</sub><span class="value" id="stokes-buoyancy">0.00</span> mN</div>
+                      <div class="stat-card">粘滞阻力 F<sub>d</sub><span class="value" id="stokes-drag">0.00</span> mN</div>
+                      <div class="stat-card">当前速度 v<span class="value" id="stokes-velocity">0.00</span> mm/s</div>
+                      <div class="stat-card">终端雷诺数 Re<span class="value" id="stokes-reynolds">0.00</span></div>
+                      <div class="stat-card" style="grid-column: 1 / -1;">收尾速度 v<sub>t</sub><span class="value" id="stokes-terminal">0.00</span> mm/s</div>
+                    </div>
+                    <p style="font-size:12px;line-height:1.6">3D 为循环示意：球密度固定为 7800 kg/m³，流体密度固定为 1000 kg/m³；尺寸与播放速度经过缩放，不能用画面距离和秒表代替物理测量。</p><div id="stokes-warning" style="margin-top: 3px; padding: 4px; background: rgba(255, 0, 0, 0.2); border: 1px solid #ff0000; border-radius: 4px; color: #ff4444; font-weight: bold; text-align: center; display: none; font-size: 0.6rem;">
+                      当前不属于纯 Stokes 模型区；使用惯性修正或平滑过渡模型
+                    </div>
+                    <div id="stokes-nomove-warning" style="margin-top: 3px; padding: 4px; background: rgba(255, 165, 0, 0.2); border: 1px solid #ff8800; border-radius: 4px; color: #ffaa00; font-weight: bold; text-align: center; display: none; font-size: 0.6rem;">
+                      终端速度很小，当前播放尺度下不易看清运动
+                    </div>
+                  </div>
+
+                  <div class="legend">
+                    <div class="legend-item">
+                      <div class="legend-color" style="background: #ff0000;"></div>
+                      <span>重力 G</span>
+                    </div>
+                    <div class="legend-item">
+                      <div class="legend-color" style="background: #00ff00;"></div>
+                      <span>浮力 F<sub>b</sub></span>
+                    </div>
+                    <div class="legend-item">
+                      <div class="legend-color" style="background: #ffaa00;"></div>
+                      <span>粘滞阻力 F<sub>d</sub></span>
+                    </div>
+                  </div>
+
+                  <button class="action-btn" id="stokes-reset">重置场景</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="operationGuide" class="operation-guide-mini">
+      <div class="guide-icon">?</div>
+      <div class="guide-popup">
+        <h4>键盘快捷键</h4>
+        <ul>
+          <li><kbd>Space</kbd> — 开始/暂停动画</li>
+          <li><kbd>R</kbd> — 重置参数</li>
+          <li><kbd>C</kbd> — 切换对比模式</li>
+          <li><kbd>T</kbd> — 切换主题</li>
+          <li><kbd>1/2/3</kbd> — 切换实验</li>
+        </ul>
+        <h4>鼠标操作</h4>
+        <ul>
+          <li>点击左侧菜单切换 原理/线图模拟/真实模拟</li>
+          <li>拖动滑块调节参数</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 二维码弹窗 -->
+<div class="qr-modal-overlay" id="qrModalOverlay">
+  <div class="qr-modal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+    <button class="qr-modal-close" id="qrModalClose" aria-label="关闭">×</button>
+    <h2 class="qr-modal-title" id="qrModalTitle">黏性现象仿真实验教学软件</h2>
+    <canvas id="qrCanvas" width="200" height="200" role="img" aria-label="访问二维码"></canvas>
+    <p class="qr-modal-note">用于手机端二维码扫描。</p>
+  </div>
+</div>
+
+
+
+<script src="src/app.js"></script>
+
+
+
+
+<!-- INQUIRY-MODULE:BEGIN v0.2.0 -->
+<link rel="stylesheet" id="inquiry-css" href="styles/14-inquiry-css.css">
+<script id="inquiry-core" src="src/03-inquiry-core.js"></script>
+<script id="inquiry-ui" src="src/04-inquiry-ui.js"></script>
+<script id="inquiry-poiseuille-core" src="src/05-inquiry-poiseuille-core.js"></script>
+<script id="inquiry-poiseuille-ui" src="src/06-inquiry-poiseuille-ui.js"></script>
+<link rel="stylesheet" id="inquiry-complete-css" href="styles/15-inquiry-complete-css.css">
+<script id="inquiry-lab-core" src="src/07-inquiry-lab-core.js"></script>
+
+<!-- GUIDE-LAYER:BEGIN v1.1.0 -->
+
+<link rel="stylesheet" id="guide-layer-css" href="styles/16-guide-layer-css.css">
+
+
+
+
+<!-- GUIDE-LAYER:END v1.1.0 -->
+
+<!-- INQUIRY-MODULE:END -->
+<script id="c2-assets" src="src/10-c2-assets.js"></script>
+<script id="c2-math" src="src/11-c2-math.js"></script>
+
+
+
+<script id="ai-math-js" src="src/12-ai-math-js.js"></script>
+
+
+<script id="c2-internal-js" src="src/13-c2-internal-js.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" id="module4-ai-bridge-css" href="styles/17-module4-ai-bridge-css.css">
+
+
+<link rel="stylesheet" id="module4-guided-ui-css" href="styles/18-module4-guided-ui-css.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" id="v6-legacy-disable-css" href="styles/19-v6-legacy-disable-css.css">
+
+
+
+<link rel="stylesheet" id="precise-param-input-css" href="styles/20-precise-param-input-css.css">
+<script id="precise-param-inputs" src="src/20-precise-param-inputs.js"></script>
+<script id="c2-chart-tune" src="src/21-c2-chart-tune.js"></script>
+
+<script id="c2-font-ready" src="src/22-c2-font-ready.js"></script>
+<script id="fluid-home-hero-hook" src="src/23-fluid-home-hero-hook.js"></script>
+
+<link rel="stylesheet" id="guide-askz-integration-css" href="styles/21-guide-askz-integration-css.css">
+
+
+﻿<!-- ===== V6 引导条 CSS ===== -->
+<link rel="stylesheet" id="v6-guide-css" href="styles/22-v6-guide-css.css">
+
+﻿<!-- 实验范围同步与四步入门引导 -->
+<script id="v78-task-scope" src="src/25-v78-task-scope.js"></script>
+<script id="v7-guide-js" src="src/26-v7-guide-js.js"></script>
+
+<!-- ===== V6 AI 入口 + 实验选择卡（移植 V4 的 askz-explore-ui / V5 的引导入口） ===== -->
+<link rel="stylesheet" id="askz-explore-css" href="styles/23-askz-explore-css.css">
+<script id="askz-explore-ui" src="src/27-askz-explore-ui.js"></script>
+
+<!-- MOBILE-ADAPTER:BEGIN JS v1.5.0 -->
+<script id="mobile-adapter-js" src="src/28-mobile-adapter-js.js"></script>
+<!-- MOBILE-ADAPTER:END JS -->
+<link rel="stylesheet" id="v7-guide-style" href="styles/24-v7-guide-style.css">
+<link rel="stylesheet" id="v5-inquiry-style" href="styles/25-v5-inquiry-style.css">
+<script id="v5-inquiry" src="src/29-v5-inquiry.js"></script>
+<script id="v7-ai-look-js" src="src/30-v7-ai-look-js.js"></script>
+<script id="v7-codap-js" src="src/31-v7-codap-js.js"></script>
+
+<script src="src/33-page-events.js"></script><link rel="stylesheet" id="v78-layout" href="styles/26-v78-layout.css">
+<script id="local-commands" src="src/34-local-commands.js"></script>
+<script id="local-assistant" src="src/35-local-assistant.js"></script>
+<script id="retired-settings" src="src/36-retired-settings.js"></script>
+<script id="lab-plot" src="src/37-lab-plot.js"></script>
+<link rel="stylesheet" href="styles/27-assistant-panel.css">
+</body></html>
