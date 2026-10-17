@@ -7358,7 +7358,7 @@ function init() {
     var canvas = document.getElementById('qrCanvas');
     if (overlay && canvas) {
       // 绘制二维码
-      QRGenerator.drawOnCanvas(canvas, 'https://hanhhhy.github.io/viscosity-simulator/', 200);
+      QRGenerator.drawOnCanvas(canvas, 'https://hanhhhy.github.io/-/v8.html', 200);
       overlay.classList.add('active');
     }
   }
