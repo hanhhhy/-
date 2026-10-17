@@ -1,0 +1,9 @@
+
+/* V6：5 步首航引导与「新手教程」卡片已停用，由页内 4 步引导条取代。
+   这里保留同名样式表，但把旧引导留下的三处 DOM 折叠掉，避免和新引导条同时出现。 */
+#inquiryPage #m4fr-intro,
+#inquiryPage #m4fr-card,
+#inquiryPage .m4fr,
+#inquiryPage .m4fr-intro{display:none !important}
+#lineSimPage #taskGuideHost,
+#3dSimPage #taskGuideHost{display:none !important}

@@ -1,0 +1,10 @@
+
+#lineSimPage #normalLayout > .data-panel {gap:0;padding:16px;}
+#lineSimPage #normalLayout > .data-panel > h3 {margin-bottom:14px;}
+#lineSimPage #normalLayout > .data-panel > .chart-container {flex:1 0 260px;min-height:260px;height:clamp(260px,38vh,360px);max-height:420px;margin:18px 0 12px;padding:14px 10px;border-radius:12px;box-sizing:border-box;}
+#lineSimPage #normalLayout #taskGuideHost {margin:0 0 8px!important;flex:none;}
+#lineSimPage #normalLayout .line-measurement-option {display:flex;align-items:flex-start;gap:7px;padding:10px 11px;border:1px solid var(--border);border-radius:9px;color:var(--text-secondary);font-size:12px;line-height:1.6;cursor:pointer;}
+#lineSimPage #normalLayout .line-measurement-option input {flex:none;margin-top:3px;accent-color:var(--primary);}
+#lineSimPage #normalLayout > .data-panel > .bottom-controls {margin-top:auto;padding-top:12px!important;border-top:1px solid var(--border);flex-shrink:0;}
+@media(max-width:768px){#lineSimPage #normalLayout > .data-panel {padding:12px;}#lineSimPage #normalLayout > .data-panel > .chart-container {flex:none;height:280px;min-height:280px;max-height:none;}}
+html.viscosity-landscape #lineSimPage #normalLayout > .data-panel > .chart-container {flex:none;height:240px;min-height:240px;}

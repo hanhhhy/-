@@ -1,0 +1,291 @@
+
+/* Mobile adapter v1.5.0. Classes are resolved by mobile-adapter.js. */
+@media screen {
+html.viscosity-mobile #app { min-height: 100dvh; }
+html.viscosity-mobile #experimentPage { height: 100vh; height: 100dvh; }
+html.viscosity-mobile .experiment-layout { flex-direction: column; min-width: 0; }
+html.viscosity-mobile .experiment-cards { grid-template-columns: minmax(0, 1fr); }
+html.viscosity-mobile #sidebar,
+html.viscosity-mobile #sidebar.collapsed {
+    width: 100%; flex: 0 0 auto; border-right: 0;
+    border-bottom: 1px solid var(--border); overflow: visible;
+  }
+html.viscosity-mobile #toggleSidebar { display: none; }
+html.viscosity-mobile #sidebar .menu-container,
+html.viscosity-mobile #sidebar.collapsed .menu-container {
+    display: flex; margin: 0; opacity: 1; pointer-events: auto;
+  }
+html.viscosity-mobile #sidebar .menu-item { flex: 1; min-width: 0; height: 46px; padding: 6px; text-align: center; font-size: 14px; }
+html.viscosity-mobile .main-content { min-width: 0; min-height: 0; }
+html.viscosity-mobile .experiment-nav { flex: 0 0 auto; flex-direction: row; flex-wrap: wrap; padding: 6px 10px; }
+html.viscosity-mobile .experiment-nav .experiment-title { flex: 1 1 100%; order: -1; font-size: 16px; text-align: center; }
+html.viscosity-mobile .experiment-nav .nav-right { margin-left: auto; }
+html.viscosity-mobile .content-area { overflow: hidden; }
+html.viscosity-mobile .sub-page.active { flex: 1 1 0; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; }
+html.viscosity-mobile #homePage { min-height: 100dvh; padding-bottom: 80px; }
+html.viscosity-mobile .home-nav-bar,
+html.viscosity-mobile .home-content,
+html.viscosity-mobile .experiment-cards { min-width: 0; }
+html.viscosity-mobile .experiment-cards { width: 100%; box-sizing: border-box; }
+html.viscosity-mobile #principlePage .principle-content { min-width: 0; width: 100%; padding: 12px; box-sizing: border-box; }
+html.viscosity-mobile #principlePage [style*="grid-template-columns"] { grid-template-columns: minmax(0, 1fr) !important; }
+html.viscosity-mobile #principlePage h2 { font-size: 21px !important; overflow-wrap: anywhere; }
+html.viscosity-mobile #principlePage h3 { font-size: 17px !important; }
+html.viscosity-mobile #principlePage .formula-box { max-width: 100%; overflow-x: auto; font-size: 16px; }
+html.viscosity-mobile #lineSimPage { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+html.viscosity-mobile #normalLayout { flex: 0 0 auto; flex-direction: column; height: auto; overflow: visible; }
+html.viscosity-mobile #normalLayout > .control-panel,
+html.viscosity-mobile #normalLayout > .data-panel {
+    width: 100%; min-width: 0; max-width: none; overflow: visible; flex: none; box-sizing: border-box;
+  }
+html.viscosity-mobile #normalLayout > .canvas-area { flex: none; height: 400px; height: clamp(340px, 55svh, 480px); min-height: 340px; box-sizing: border-box; }
+html.viscosity-mobile #normalLayout > .canvas-area canvas { touch-action: pan-y pinch-zoom !important; cursor: default; }
+html.viscosity-mobile #normalLayout .canvas-area > div { max-width: calc(100% - 16px); }
+html.viscosity-mobile #btn-report { min-height: 44px; white-space: normal; }
+html.viscosity-mobile .param-label { flex-wrap: wrap; gap: 4px 8px; font-size: 14px; }
+html.viscosity-mobile .param-value { overflow-wrap: anywhere; }
+html.viscosity-mobile .preset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html.viscosity-mobile .preset-btn { min-height: 44px; font-size: 13px; white-space: normal; }
+html.viscosity-mobile .bottom-controls { flex-wrap: wrap; overflow: visible; gap: 8px; }
+html.viscosity-mobile .bottom-controls > button { flex: 1 1 100px; min-height: 44px; font-size: 14px !important; }
+html.viscosity-mobile .chart-container { flex: none; height: 220px; }
+html.viscosity-mobile #dataContainer { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+html.viscosity-mobile #dataContainer > :not(.data-card) { grid-column: 1 / -1; }
+html.viscosity-mobile .data-card { min-width: 0; }
+html.viscosity-mobile .data-value { font-size: 16px; overflow-wrap: anywhere; }
+html.viscosity-mobile [id="3dSimPage"].active { height: auto; overflow-y: auto; padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+html.viscosity-mobile [id="3dSimPage"] > div { flex-direction: column !important; height: auto !important; flex: none; }
+html.viscosity-mobile [id="3dSimPage"] #canvas-container { flex: none !important; height: 360px; height: clamp(300px, 52svh, 480px); min-height: 300px; }
+html.viscosity-mobile [id="3dSimPage"] .control-panel { width: 100% !important; min-width: 0; max-width: none; flex: none; overflow: visible !important; box-sizing: border-box; }
+html.viscosity-mobile [id="3dSimPage"] .panel-section { padding: 10px; margin-bottom: 10px; }
+html.viscosity-mobile [id="3dSimPage"] .panel-section h3 { font-size: 16px; }
+html.viscosity-mobile [id="3dSimPage"] .control-group label,
+html.viscosity-mobile [id="3dSimPage"] .value-display { font-size: 14px; }
+html.viscosity-mobile [id="3dSimPage"] .stat-card,
+html.viscosity-mobile [id="3dSimPage"] .legend-item,
+html.viscosity-mobile [id="3dSimPage"] .status-indicator { font-size: 13px; }
+html.viscosity-mobile [id="3dSimPage"] .stat-card .value { font-size: 17px; }
+html.viscosity-mobile [id="3dSimPage"] .action-btn { min-height: 44px; font-size: 14px; }
+html.viscosity-mobile #app input[type="range"] { height: 32px; margin: 6px 0; touch-action: pan-y; }
+html.viscosity-mobile #app input[type="range"]::-webkit-slider-thumb { width: 24px; height: 24px; }
+html.viscosity-mobile #app input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; }
+html.viscosity-mobile #app button { touch-action: manipulation; }
+html.viscosity-mobile .back-btn,
+html.viscosity-mobile .qr-btn { height: auto; min-height: 44px; }
+html.viscosity-mobile #compare-container { flex: none; min-height: auto; overflow: visible; padding-bottom: 12px; }
+html.viscosity-mobile #compare-container > .card:first-child { flex-wrap: wrap; gap: 10px; }
+html.viscosity-mobile #compare-container > .card:first-child > div { flex-wrap: wrap; }
+html.viscosity-mobile #compare-container button { min-height: 44px; }
+html.viscosity-mobile #compare-container .compare-row { flex-direction: column; }
+html.viscosity-mobile #compare-container .compare-col { width: 100%; }
+html.viscosity-mobile #compare-container .card > div[style*="grid-template-columns"] { grid-template-columns: minmax(0, 1fr) !important; }
+html.viscosity-mobile #compare-container .param-row { gap: 6px; font-size: 14px; }
+html.viscosity-mobile #compare-container .param-row input[type="range"] { flex: 1 1 120px; }
+html.viscosity-mobile #compare-container .compare-data-table { table-layout: fixed; font-size: 12px !important; }
+html.viscosity-mobile #compare-container .compare-data-table th,
+html.viscosity-mobile #compare-container .compare-data-table td { padding: 8px 3px !important; overflow-wrap: anywhere; }
+html.viscosity-mobile .mobile-compare-scroll { overflow-x: auto; width: 100%; min-width: 0; max-width: 100%; touch-action: pan-x pan-y; }
+html.viscosity-mobile .mobile-compare-surface { width: 760px; }
+html.viscosity-mobile .mobile-compare-hint { margin: 6px 0; font-size: 13px; color: var(--text-secondary); }
+html.viscosity-mobile #ai-panel { width: min(400px, 100vw); height: var(--mobile-visible-height, 100dvh); top: var(--mobile-visible-top, 0px); max-width: 100%; }
+html.viscosity-mobile #ai-panel-header { flex-shrink: 0; padding-top: max(10px, env(safe-area-inset-top)); }
+html.viscosity-mobile #ai-messages { min-height: 0; overscroll-behavior: contain; }
+html.viscosity-mobile #ai-input-area { flex-shrink: 0; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+html.viscosity-mobile #ai-user-input { min-width: 0; font-size: 16px; }
+html.viscosity-mobile #ai-panel button { min-height: 44px; min-width: 44px; }
+html.viscosity-mobile #ai-launcher { width: 48px; height: 56px; bottom: calc(64px + env(safe-area-inset-bottom)); right: 12px; padding: 6px 4px; gap: 4px; touch-action: manipulation; }
+html.viscosity-mobile #ai-panel:not(.open) { visibility: hidden; pointer-events: none; }
+html.viscosity-mobile #ai-panel.open { visibility: visible; pointer-events: auto; }
+html.viscosity-mobile .mobile-3d-help { padding: 8px 12px; margin: 0; background: var(--surface); color: var(--text-secondary); font-size: 13px; line-height: 1.5; }
+html.viscosity-mobile .mobile-3d-help button { min-height: 44px; padding: 6px 12px; margin-right: 8px; color: var(--text-primary); background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px; }
+html.viscosity-mobile .mobile-3d-scroll #canvas-container canvas { touch-action: pan-y pinch-zoom !important; pointer-events: none; }
+html.viscosity-mobile .qr-modal-overlay { padding: 12px; box-sizing: border-box; }
+html.viscosity-mobile .qr-modal { max-width: 100%; max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); overflow-y: auto; padding: 56px 16px 16px; box-sizing: border-box; }
+html.viscosity-mobile .qr-modal-close { width: 44px; height: 44px; }
+html.viscosity-mobile #qrCanvas { max-width: 100%; height: auto; }
+html.viscosity-mobile #operationGuide { display: none; }
+@media (hover: none) {
+html.viscosity-mobile .experiment-card:hover,
+html.viscosity-mobile .panel-section:hover,
+html.viscosity-mobile .action-btn:hover { transform: none; }
+}
+}
+@media screen {
+html.viscosity-landscape #experimentPage { height: var(--mobile-workspace-height, 100vh); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box; }
+html.viscosity-landscape .experiment-layout { flex-direction: row; }
+html.viscosity-landscape #sidebar,
+html.viscosity-landscape #sidebar.collapsed { width: 76px; flex: 0 0 76px; overflow-y: auto; border-right: 1px solid var(--border); border-bottom: 0; transition: none; }
+html.viscosity-landscape #sidebar .menu-container,
+html.viscosity-landscape #sidebar.collapsed .menu-container { flex-direction: column; }
+html.viscosity-landscape #sidebar .menu-item { flex: none; height: 56px; font-size: 12px; padding: 4px; white-space: normal; }
+html.viscosity-landscape .experiment-nav { height: 44px; min-height: 44px; box-sizing: border-box; padding: 2px 8px; flex-wrap: nowrap; gap: 8px; }
+html.viscosity-landscape .experiment-nav .experiment-title { flex: 1 1 auto; order: 0; min-width: 0; font-size: 14px; }
+html.viscosity-landscape .experiment-nav .back-btn,
+html.viscosity-landscape .experiment-nav .qr-btn { min-height: 36px; font-size: 12px; padding: 4px 8px; white-space: nowrap; }
+html.viscosity-landscape #lineSimPage.active { padding: 0; overflow: hidden; display: flex; }
+html.viscosity-landscape #normalLayout { display: grid; grid-template-columns: clamp(176px, calc(var(--mobile-workspace-width, 100vw) * 0.25), 250px) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); flex: 1 1 0; height: 0; min-height: 0; overflow: hidden; }
+html.viscosity-landscape #normalLayout > .control-panel { grid-column: 1; grid-row: 1; height: 100%; overflow-y: auto; overscroll-behavior: contain; padding: 8px; }
+html.viscosity-landscape #normalLayout > .canvas-area { grid-column: 2; grid-row: 1; height: 100%; min-height: 0; min-width: 0; border: 0; }
+html.viscosity-landscape #normalLayout > .data-panel { display: none; grid-column: 1; grid-row: 1; height: 100%; overflow-y: auto; overscroll-behavior: contain; padding: 8px; }
+html.viscosity-landscape #normalLayout.mobile-show-data > .control-panel { display: none; }
+html.viscosity-landscape #normalLayout.mobile-show-data > .data-panel { display: flex; }
+html.viscosity-landscape #normalLayout #dataContainer { grid-template-columns: minmax(0, 1fr); }
+html.viscosity-landscape #normalLayout .param-group { padding: 6px; margin-bottom: 6px; }
+html.viscosity-landscape #normalLayout .param-label { font-size: 13px; }
+html.viscosity-landscape #normalLayout .control-panel h3,
+html.viscosity-landscape #normalLayout .data-panel h3 { font-size: 14px; margin-bottom: 6px; padding-bottom: 5px; }
+html.viscosity-landscape #normalLayout .preset-grid { grid-template-columns: minmax(0, 1fr); }
+html.viscosity-landscape .mobile-landscape-toolbar { display: flex; flex: 0 0 auto; align-items: center; gap: 6px; flex-wrap: nowrap; min-width: 0; overflow-x: auto; padding: 3px 8px; background: var(--surface); border-bottom: 1px solid var(--border); overscroll-behavior-x: contain; }
+html.viscosity-landscape .mobile-landscape-toolbar > * { flex-shrink: 0; white-space: nowrap; }
+html.viscosity-landscape .mobile-landscape-toolbar #btn-report { min-height: 38px; white-space: nowrap; }
+html.viscosity-landscape .mobile-landscape-toolbar > button { min-height: 38px; padding: 4px 10px; font-size: 13px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-alt); color: var(--text-primary); }
+html.viscosity-landscape .mobile-landscape-toolbar > button[aria-pressed="true"] { background: var(--accent); color: white; }
+html.viscosity-landscape .mobile-landscape-toolbar .bottom-controls { display: flex; flex-direction: row; margin: 0 0 0 auto; padding: 0; gap: 6px; flex-wrap: nowrap; border: 0; }
+html.viscosity-landscape .mobile-landscape-toolbar .bottom-controls > button { flex: none; min-height: 38px; padding: 4px 8px; font-size: 12px !important; white-space: nowrap; }
+html.viscosity-landscape #lineSimPage.mobile-comparing .mobile-landscape-toolbar { display: none; }
+html.viscosity-landscape #lineSimPage.mobile-comparing { overflow-y: auto; }
+html.viscosity-landscape [id="3dSimPage"].active { height: 100%; min-height: 0; padding: 0; overflow: hidden; }
+html.viscosity-landscape [id="3dSimPage"] > div { display: grid !important; grid-template-columns: clamp(180px, calc(var(--mobile-workspace-width, 100vw) * 0.25), 250px) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); height: 100% !important; flex: 1 1 0; min-height: 0; overflow: hidden; }
+html.viscosity-landscape [id="3dSimPage"] .mobile-3d-help { grid-column: 1; grid-row: 1; padding: 2px 6px; font-size: 12px; }
+html.viscosity-landscape [id="3dSimPage"] .mobile-3d-help span { display: none; }
+html.viscosity-landscape [id="3dSimPage"] .mobile-3d-help button { min-height: 36px; padding: 2px 8px; }
+html.viscosity-landscape [id="3dSimPage"] .control-panel { grid-column: 1; grid-row: 2; height: 100%; min-height: 0; overflow-y: auto !important; overscroll-behavior: contain; padding: 6px !important; }
+html.viscosity-landscape [id="3dSimPage"] #canvas-container { grid-column: 2; grid-row: 1 / -1; height: 100%; min-height: 0; min-width: 0; width: 100%; }
+html.viscosity-landscape [id="3dSimPage"] .panel-section { padding: 6px; }
+html.viscosity-landscape #ai-launcher { width: 42px; height: 52px; font-size: 20px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); }
+html.viscosity-landscape #normalLayout > .control-panel,
+html.viscosity-landscape #normalLayout > .data-panel { min-height: 0; scrollbar-gutter: stable; }
+@media (min-width: 1100px) {
+html.viscosity-landscape #normalLayout { grid-template-columns: 230px minmax(0, 1fr) 230px; }
+html.viscosity-landscape #normalLayout > .data-panel,
+html.viscosity-landscape #normalLayout.mobile-show-data > .data-panel { display: flex; grid-column: 3; }
+html.viscosity-landscape #normalLayout.mobile-show-data > .control-panel { display: block; }
+html.viscosity-landscape .mobile-landscape-toolbar > button[aria-pressed] { display: none; }
+}
+}
+/* WeChat portrait-WebView fallback. Does not rotate the browser chrome. */
+#mobile-landscape-toggle { display: none; }
+@media screen {
+  html.viscosity-mobile #experimentPage { height: var(--mobile-workspace-height, 100vh); }
+  html.viscosity-mobile #mobile-landscape-toggle { display: inline-block; min-height: 40px; padding: 5px 9px; margin-left: 6px; border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); background: var(--surface-alt); font-size: 12px; white-space: nowrap; }
+  html.viscosity-mobile #mobile-landscape-toggle[hidden] { display: none; }
+  html.viscosity-mobile #mobile-landscape-toggle[aria-pressed="true"] { background: var(--accent); color: white; }
+  html.viscosity-landscape .experiment-nav .nav-right { flex-shrink: 0; display: flex; align-items: center; }
+  html.viscosity-landscape .experiment-nav .experiment-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  html.viscosity-rotated #experimentPage {
+    position: fixed; top: 0; left: 0; width: var(--mobile-physical-height); height: var(--mobile-physical-width);
+    transform-origin: 0 0; transform: translateX(var(--mobile-physical-width)) rotate(90deg) !important;
+    padding-left: env(safe-area-inset-top); padding-right: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-right); padding-bottom: env(safe-area-inset-left);
+  }
+}
+/* Current C2 interface: mobile-only corrections layered over v1.4.0. */
+html.viscosity-mobile,
+html.viscosity-mobile body { width: 100%; max-width: 100%; overflow-x: hidden; }
+html.viscosity-mobile body { overscroll-behavior-x: none; }
+html.viscosity-mobile #experimentPage .sidebar,
+html.viscosity-mobile #experimentPage .sidebar.collapsed { min-width: 0; padding: 0; }
+html.viscosity-mobile #experimentPage #sidebar .menu-container,
+html.viscosity-mobile #experimentPage #sidebar.collapsed .menu-container {
+  flex-direction: row; gap: 0; width: 100%; margin: 0; overflow-x: auto;
+  scrollbar-width: none; overscroll-behavior-x: contain;
+}
+html.viscosity-mobile #experimentPage #sidebar .menu-container::-webkit-scrollbar { display: none; }
+html.viscosity-mobile #experimentPage #sidebar .menu-item {
+  width: auto; min-width: 88px; justify-content: center; border-radius: 0;
+  white-space: nowrap; box-shadow: none;
+}
+html.viscosity-mobile #experimentPage #sidebar .menu-item.active::before {
+  left: 18px; right: 18px; top: auto; bottom: 0; width: auto; height: 3px;
+  border-radius: 3px 3px 0 0;
+}
+html.viscosity-mobile #experimentPage .experiment-nav { min-width: 0; height: auto; }
+html.viscosity-mobile #experimentPage .experiment-nav .back-btn { flex: 0 0 auto; }
+html.viscosity-mobile #experimentPage .experiment-nav .nav-right {
+  flex: 1 1 0; min-width: 0; max-width: 100%; overflow-x: auto;
+  scrollbar-width: none; overscroll-behavior-x: contain;
+}
+html.viscosity-mobile #experimentPage .experiment-nav .nav-right::-webkit-scrollbar { display: none; }
+html.viscosity-mobile #experimentPage .experiment-nav .nav-right > * { flex: 0 0 auto; }
+html.viscosity-mobile #principlePage { padding: 0 !important; }
+html.viscosity-mobile #principlePage .principle-content {
+  padding: 0 !important; border-radius: 0; box-shadow: none; overflow: hidden;
+}
+html.viscosity-mobile #principlePage .c2-hero { height: 300px; }
+html.viscosity-mobile #principlePage .c2-hero-inner { padding: 0 20px 58px; }
+html.viscosity-mobile #principlePage .c2-hero-title { font-size: 28px; line-height: 1.25; }
+html.viscosity-mobile #principlePage .c2-hero-sub {
+  margin-top: 10px; font-size: 14px; line-height: 1.7; display: -webkit-box;
+  -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+html.viscosity-mobile #principlePage .c2-tabs {
+  overflow-x: auto; overflow-y: hidden; align-items: stretch; scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+html.viscosity-mobile #principlePage .c2-tabs::-webkit-scrollbar { display: none; }
+html.viscosity-mobile #principlePage .c2-tab { flex: 0 0 auto; min-width: 92px; font-size: 13px; }
+html.viscosity-mobile #principlePage .c2-doc { width: 100%; padding: 24px 16px 64px; box-sizing: border-box; }
+html.viscosity-mobile #principlePage .c2-sec { margin-bottom: 30px; }
+html.viscosity-mobile #principlePage .c2-sec > h3 { font-size: 21px; }
+html.viscosity-mobile #principlePage .c2-rig { height: 220px; }
+@media (hover: none) {
+  html.viscosity-mobile #principlePage .c2-rig .c2-rig-media img {
+    opacity: 1; filter: saturate(.95) contrast(1.03) brightness(.9); transform: scale(1.08);
+  }
+  html.viscosity-mobile #principlePage .c2-rig .c2-rig-title {
+    transform: translateY(calc(-1 * var(--c2-lift)));
+  }
+  html.viscosity-mobile #principlePage .c2-rig .c2-rig-desc { opacity: 1; transform: none; }
+}
+html.viscosity-mobile #lineSimPage.active { padding: 0; }
+html.viscosity-mobile #normalLayout > .canvas-area { order: 1; width: 100%; }
+html.viscosity-mobile #normalLayout > .control-panel { order: 2; }
+html.viscosity-mobile #normalLayout > .data-panel { order: 3; }
+html.viscosity-mobile #inquiryPage { width: 100%; min-width: 0; box-sizing: border-box; }
+html.viscosity-mobile #inquiryPage .iqc-shell,
+html.viscosity-mobile #inquiryPage .iqc-card,
+html.viscosity-mobile #inquiryPage .iqc-band { min-width: 0; box-sizing: border-box; }
+html.viscosity-mobile #inquiryPage .iqc-actions > button { min-height: 44px; }
+html.viscosity-mobile .c2-top { right: 12px; bottom: calc(64px + env(safe-area-inset-bottom)); }
+
+html.viscosity-landscape:not(.viscosity-rotated) #mobile-landscape-toggle { display: none; }
+html.viscosity-landscape #experimentPage .sidebar,
+html.viscosity-landscape #experimentPage .sidebar.collapsed { min-width: 76px; padding: 0; }
+html.viscosity-landscape #experimentPage #sidebar .menu-container,
+html.viscosity-landscape #experimentPage #sidebar.collapsed .menu-container { margin: 0; gap: 0; }
+html.viscosity-landscape #experimentPage #sidebar .menu-item {
+  width: 100%; min-width: 0; justify-content: center; border-radius: 0;
+}
+html.viscosity-landscape #experimentPage #sidebar .menu-item.active::before {
+  left: 0; right: auto; top: 10px; bottom: 10px; width: 3px; height: auto;
+  border-radius: 0 3px 3px 0;
+}
+html.viscosity-landscape #experimentPage .experiment-nav .nav-right {
+  flex: 0 1 auto; max-width: 55%; overflow-x: auto; scrollbar-width: none;
+}
+html.viscosity-landscape #experimentPage .experiment-nav .nav-right::-webkit-scrollbar { display: none; }
+html.viscosity-landscape #principlePage .c2-hero { height: min(250px, 72svh); }
+html.viscosity-landscape #principlePage .c2-hero-inner { padding: 0 24px 48px; }
+html.viscosity-landscape #principlePage .c2-hero-title { font-size: 26px; }
+html.viscosity-landscape #principlePage .c2-hero-sub { display: none; }
+html.viscosity-landscape #principlePage .c2-doc { padding: 22px 24px 54px; }
+html.viscosity-landscape #normalLayout > .canvas-area { order: initial; }
+html.viscosity-landscape #normalLayout > .control-panel,
+html.viscosity-landscape #normalLayout > .data-panel { order: initial; }
+html.viscosity-landscape #inquiryPage.active { overflow-y: auto; padding: 8px; }
+html.viscosity-landscape #inquiryPage .iqc-grid { grid-template-columns: minmax(0, 1fr); }
+/* V3 mobile fixes: current collapsed sidebar state and narrow nav controls. */
+html.viscosity-mobile #experimentPage #sidebar.collapsed .menu-container,
+html.viscosity-mobile #experimentPage #sidebar.collapsed .menu-item {
+  pointer-events: auto;
+}
+html.viscosity-mobile #experimentPage .experiment-nav .nav-right {
+  min-width: 0;
+}
+html.viscosity-mobile #experimentPage #mobile-landscape-toggle {
+  flex: 0 0 auto;
+  max-width: min(52vw, 120px);
+  margin-left: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

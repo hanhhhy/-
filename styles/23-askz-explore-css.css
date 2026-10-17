@@ -1,0 +1,19 @@
+
+/* AI 消息流里的三张实验选择卡（V4 askz-explore-css 移植，去掉与其它清单的重名风险） */
+.askz-exp-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 0 4px}
+.askz-exp-card{
+  display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+  padding:12px 12px 11px;border:1px solid var(--border,#d8dee8);border-radius:12px;
+  background:var(--surface,#fff);color:var(--text-primary,#14202e);cursor:pointer;
+  font:inherit;text-align:left;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+}
+.askz-exp-card:hover{transform:translateY(-2px);border-color:#00a8cc;box-shadow:0 8px 22px rgba(0,90,160,.16)}
+.askz-exp-card .aec-ico{font-size:22px;line-height:1.2}
+.askz-exp-card .aec-name{font-size:13.5px;font-weight:700;line-height:1.4}
+.askz-exp-card .aec-overview{font-size:11.5px;color:var(--text-muted,#5d6b7e);line-height:1.5}
+.askz-exp-card .aec-progress{font-size:11.5px;color:#0086a3;font-weight:700;line-height:1.5}
+.askz-exp-hint{margin:7px 0 2px;font-size:12px;color:var(--text-muted,#5d6b7e)}
+body.dark-theme .askz-exp-card{background:#22262e;border-color:#3a4250}
+body.dark-theme .askz-exp-card:hover{border-color:#00a8cc}
+@media (max-width:768px){.askz-exp-cards{grid-template-columns:minmax(0,1fr)}}

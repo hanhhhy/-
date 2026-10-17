@@ -1,0 +1,224 @@
+
+/* Mobile V8 layout fixes: keep the guide compact and expose chart + controls together. */
+@media screen and (max-width: 768px), screen and (max-width: 1366px) and (hover: none) and (pointer: coarse) {
+  html.viscosity-mobile #compare-container {
+    box-sizing: border-box;
+    padding: 8px;
+    gap: 8px;
+    overscroll-behavior-y: contain;
+  }
+  html.viscosity-mobile #compare-container .compare-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+  }
+  html.viscosity-mobile #compare-container .compare-col { width: 100%; min-width: 0; }
+  html.viscosity-mobile #compare-container .compare-toolbar-card {
+    position: sticky;
+    top: 0;
+    z-index: 12;
+    min-height: 44px;
+    overflow: hidden;
+  }
+  html.viscosity-mobile #compare-container .compare-toolbar-card > span:first-child {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  html.viscosity-mobile #compare-container .compare-toolbar-card > div {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  html.viscosity-mobile #compare-container .compare-toolbar-card > div::-webkit-scrollbar { display: none; }
+  html.viscosity-mobile #compare-container .compare-stage-card {
+    position: sticky;
+    top: 46px;
+    z-index: 10;
+    overflow: hidden;
+    background: var(--cmp-bg) !important;
+  }
+  html.viscosity-mobile #compare-container .compare-stage-card .mobile-compare-scroll {
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+  html.viscosity-mobile #compare-container .compare-presets-card,
+  html.viscosity-mobile #compare-container .compare-params,
+  html.viscosity-mobile #compare-container .compare-data-card {
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  html.viscosity-mobile #compare-container .compare-params .param-row { min-width: 0; }
+  html.viscosity-mobile #compare-container .compare-params input[type="range"] { min-width: 110px; touch-action: pan-x; }
+  html.viscosity-mobile #compare-container .compare-data-card { overflow-x: auto; }
+  html.viscosity-mobile #compare-container .compare-data-table { min-width: 360px; }
+
+  /* The guide is useful context, but should not consume the simulation viewport. */
+  html.viscosity-landscape #v7GuideBar {
+    flex-wrap: nowrap;
+    gap: 6px;
+    min-height: 40px;
+    max-height: 42px;
+    padding: 3px 8px;
+    overflow: hidden;
+  }
+  html.viscosity-landscape #v7GuideBar .v7gb-text { display: none; }
+  html.viscosity-landscape #v7GuideBar .v7gb-actions {
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  html.viscosity-landscape #v7GuideBar .v7gb-actions::-webkit-scrollbar { display: none; }
+  html.viscosity-landscape #v7GuideBar button { min-height: 32px; padding: 4px 9px; font-size: 12px; white-space: nowrap; }
+  html.viscosity-landscape #v7GuideBar .v7gb-badge { padding: 3px 8px; font-size: 11px; white-space: nowrap; }
+  html.viscosity-landscape #v7GuideBar .v7gb-dots { gap: 1px; }
+}
+
+@media screen and (min-width: 600px) and (max-width: 1366px) and (hover: none) and (pointer: coarse), screen and (orientation: landscape) and (max-width: 900px) {
+  /* Normal line simulation: controls, canvas and data stay visible together. */
+  html.viscosity-landscape #normalLayout {
+    display: grid !important;
+    grid-template-columns: clamp(184px, 27vw, 250px) minmax(0, 1fr) clamp(184px, 27vw, 250px) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  html.viscosity-landscape #normalLayout > .control-panel,
+  html.viscosity-landscape #normalLayout > .data-panel {
+    display: flex !important;
+    flex-direction: column;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    pointer-events: auto;
+    position: relative;
+    z-index: 3;
+    scrollbar-gutter: stable;
+  }
+  html.viscosity-landscape #normalLayout > .control-panel { grid-column: 1; grid-row: 1; }
+  html.viscosity-landscape #normalLayout > .canvas-area { grid-column: 2; grid-row: 1; min-width: 0; min-height: 0; height: 100%; }
+  html.viscosity-landscape #normalLayout > .data-panel { grid-column: 3; grid-row: 1; }
+  html.viscosity-landscape #normalLayout.mobile-show-data > .control-panel,
+  html.viscosity-landscape #normalLayout.mobile-show-data > .data-panel { display: flex !important; }
+  html.viscosity-landscape #normalLayout .mobile-landscape-toolbar > button:nth-child(1),
+  html.viscosity-landscape #normalLayout .mobile-landscape-toolbar > button:nth-child(2) { display: none !important; }
+  html.viscosity-landscape #lineSimPage #normalLayout #taskGuideHost {
+    flex: 0 0 auto;
+    max-height: 96px;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  /* 3D: the helper becomes a slim full-width row; the scrollable panel gets the full second row. */
+  html.viscosity-landscape #3dSimPage > div {
+    grid-template-columns: clamp(184px, 27vw, 250px) minmax(0, 1fr) !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  html.viscosity-landscape #3dSimPage .mobile-3d-help {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    max-height: 38px;
+    box-sizing: border-box;
+    padding: 2px 8px !important;
+    margin: 0 !important;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  html.viscosity-landscape #3dSimPage .mobile-3d-help span { display: inline !important; overflow: hidden; text-overflow: ellipsis; }
+  html.viscosity-landscape #3dSimPage .mobile-3d-help button { flex: 0 0 auto; min-height: 32px; padding: 2px 8px; }
+  html.viscosity-landscape #3dSimPage .control-panel {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    pointer-events: auto;
+    position: relative;
+    z-index: 4;
+    scrollbar-gutter: stable;
+  }
+  html.viscosity-landscape #3dSimPage #canvas-container {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+}
+
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  /* Keep portrait comparison usable while scrolling parameters: the chart remains in view. */
+  html.viscosity-mobile #compare-container .compare-stage-card { top: 46px; }
+  html.viscosity-mobile #compare-container .compare-params .param-row { padding: 9px 8px; }
+}
+
+@media screen and (orientation: landscape) and (max-width: 900px) {
+  /* Comparison mode: left parameter stack and right live canvas/data remain visible together. */
+  html.viscosity-landscape #lineSimPage.mobile-comparing {
+    overflow: hidden !important;
+    min-height: 0 !important;
+  }
+  html.viscosity-landscape #compare-container.active {
+    display: grid !important;
+    grid-template-columns: minmax(184px, 32vw) minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "toolbar toolbar"
+      "warning warning"
+      "presets stage"
+      "params stage"
+      "data data";
+    align-content: start;
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 6px;
+    gap: 6px;
+    box-sizing: border-box;
+  }
+  html.viscosity-landscape #compare-container .compare-toolbar-card { grid-area: toolbar; position: sticky; top: 0; z-index: 12; }
+  html.viscosity-landscape #compare-container #comp-reynolds-warning { grid-area: warning; }
+  html.viscosity-landscape #compare-container .compare-presets-card { grid-area: presets; min-width: 0; }
+  html.viscosity-landscape #compare-container .compare-row { grid-area: params; min-width: 0; margin: 0; }
+  html.viscosity-landscape #compare-container .compare-stage-card {
+    grid-area: stage;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    min-width: 0;
+    overflow: hidden;
+    z-index: 8;
+  }
+  html.viscosity-landscape #compare-container .compare-data-card { grid-area: data; min-width: 0; overflow-x: auto; }
+  html.viscosity-landscape #compare-container .compare-vt-card { grid-column: 1 / -1; min-width: 0; }
+  html.viscosity-landscape #compare-container .compare-row .compare-col { width: 100%; }
+  html.viscosity-landscape #compare-container .compare-params .param-row { padding: 8px 7px; }
+  html.viscosity-landscape #compare-container .compare-params input[type="range"] { min-width: 90px; }
+}

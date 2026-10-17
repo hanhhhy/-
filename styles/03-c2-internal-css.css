@@ -1,0 +1,742 @@
+
+/* 实验页样式：原理页主题变量、导航、装置卡与工作区组件。 */
+
+#experimentPage #principlePage{
+  /* 浅色主题变量仅用于原理页；线图与三维工作区使用各自规则。 */
+  --background:#f4f4f4;
+  --surface:#ffffff;
+  --surface-alt:#f4f4f4;
+  --surface-hover:#eef1f6;
+  --border:#e6e6e6;
+  --border-light:#ededed;
+  --border-focus:#1677ff;
+  --text-primary:#16202c;
+  --text-secondary:#4e5d6f;
+  --text-muted:#4e5d6f;
+  --text-hint:#8a97a8;
+  --primary:#16202c;
+  --primary-hover:#26313f;
+  --accent:#1677ff;
+  --accent-hover:#0b5ed7;
+  --c2-serif:"Noto Serif SC","Source Han Serif SC",SimSun,"Microsoft YaHei",serif;
+  --c2-ink:#16202c;
+  --c2-body:#2f3b4a;
+  --c2-line:#e6e6e6;
+  --c2-card:#ffffff;
+  --c2-accent:#1677ff;
+  font-family:"Times New Roman",Times,"Microsoft YaHei","PingFang SC",serif;
+  background:var(--background);
+}
+
+/* ---- 深色工作区：线图模拟 / 3D 模拟 ----
+   注意：3D 那页的 id 是 3dSimPage，CSS 里 #3dSimPage 是**非法选择器**
+   （标识符不能以数字开头，整条规则会被丢弃），所以必须写成 [id="3dSimPage"]。 */
+#c2off #lineSimPage,
+#c2off [id="3dSimPage"]{
+  --background:#0d141c;
+  --surface:#121b25;
+  --surface-alt:#16202c;
+  --surface-hover:#1b2635;
+  --border:#1f2c3a;
+  --border-light:#1a2533;
+  --text-primary:#e7eef7;
+  --text-secondary:#93a4b8;
+  --text-muted:#93a4b8;
+  --text-hint:#67788c;
+  --primary:#e7eef7;
+  --accent:#4aa8ff;
+  --accent-hover:#2f7fd6;
+  background:#0d141c;
+  color:#e7eef7;
+}
+#c2off #lineSimPage .data-value,
+#c2off #lineSimPage .param-value,
+#c2off #lineSimPage .legend{font-family:"Times New Roman",Times,serif;font-variant-numeric:tabular-nums}
+
+/* ============ 顶栏（浅色） ============ */
+#experimentPage .experiment-nav{
+  height:56px;
+  padding:0 16px;
+  gap:14px;
+  background:#fff;
+  border-bottom:1px solid #e6e6e6;
+}
+#experimentPage .back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  height:32px;padding:0 12px;border-radius:8px;
+  background:#fff;border:1px solid #d8d8d8;color:#4e5d6f;
+  font-family:var(--c2-serif);font-size:13px;font-weight:500;
+  transition:border-color .16s,color .16s,background .16s;
+}
+#experimentPage .back-btn:hover{border-color:#1677ff;color:#1677ff;background:#e9f2ff}
+#experimentPage .experiment-title{
+  font-size:16px;font-weight:700;letter-spacing:.2px;color:#16202c;
+}
+#experimentPage .nav-right{gap:8px;margin-left:auto}
+#experimentPage .nav-right .qr-btn{
+  height:32px;padding:0 12px;border-radius:8px;
+  background:#fff;border:1px solid #d8d8d8;color:#4e5d6f;
+  font-family:var(--c2-serif);font-size:12.5px;font-weight:500;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:border-color .16s,color .16s,background .16s;
+}
+#experimentPage .nav-right .qr-btn:hover{border-color:#1677ff;color:#1677ff;background:#e9f2ff}
+#experimentPage .nav-right .nav-ai-btn{border-color:#1677ff;color:#1677ff;font-weight:600}
+#experimentPage .nav-right .qr-icon{font-size:13px;line-height:1}
+
+/* ============ 导航栏左上角的品牌 logo（首页 + 实验页，一直在） ============ */
+/* 首页顶栏是 justify-content:flex-end，实验页顶栏靠 .nav-right 的 margin-left:auto，
+   这里给 logo 一个 margin-right:auto：两种顶栏里都被顶到最左边，右边那组照旧靠右。 */
+.c2-brand{
+  display:inline-flex;align-items:center;flex:none;
+  margin-right:auto;
+}
+
+/* 深色主题：logo 的深蓝部分直接放会融进深色顶栏，这里把整体提亮（不动透明度，
+   所以不会出现描边/白边），改成亮蓝后对比度就够了 */
+body.dark-theme .c2-brand img,
+body.dark-theme #experimentPage .sidebar .toggle-btn img{
+  filter:brightness(1.7);
+}
+.c2-brand img{
+  display:block;width:40px;height:40px;object-fit:contain;
+  /* logo 本身已是透明底，不再垫白块；阴影改用 drop-shadow 贴着图形走 */
+  filter:drop-shadow(0 1px 2px rgba(15,39,68,.22));
+}
+/* 实验页顶栏比首页矮（56 vs 64），logo 跟着收一点 */
+#experimentPage .c2-brand img{width:28px;height:28px}
+@media (max-width:900px){
+  /* 窄屏时实验页顶栏会竖排，logo 单独一行、靠左不拉伸 */
+  #experimentPage .c2-brand{justify-content:flex-start;margin-right:0}
+}
+
+/* ---- 原来左下角那个「?」操作指引：挪进右上角导航栏（悬浮球 → 导航项） ---- */
+#experimentPage .experiment-nav .operation-guide-mini{
+  position:relative;left:auto;bottom:auto;top:auto;right:auto;z-index:60;
+  display:flex;align-items:center;
+}
+#experimentPage .experiment-nav .operation-guide-mini .guide-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:#fff;border:1px solid #d8d8d8;color:#4e5d6f;
+  font-family:"Times New Roman",Times,serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:border-color .16s,color .16s,background .16s;
+}
+#experimentPage .experiment-nav .operation-guide-mini .guide-icon:hover{
+  background:#e9f2ff;border-color:#1677ff;color:#1677ff;transform:none;
+}
+#experimentPage .experiment-nav .operation-guide-mini .guide-popup{
+  top:44px;bottom:auto;left:auto;right:0;width:250px;
+  background:#fff;border:1px solid #e6e6e6;border-radius:10px;
+  box-shadow:0 16px 36px rgba(20,40,80,.14);
+  padding:12px 14px;font-size:12px;color:#4e5d6f;
+  transform:translateY(-6px);
+}
+#experimentPage .experiment-nav .operation-guide-mini:hover .guide-popup{transform:translateY(0)}
+#experimentPage .experiment-nav .operation-guide-mini .guide-popup h4{
+  color:#16202c;font-size:12.5px;font-weight:700;margin:6px 0 5px;
+}
+#experimentPage .experiment-nav .operation-guide-mini .guide-popup h4:first-child{margin-top:0}
+#experimentPage .experiment-nav .operation-guide-mini .guide-popup ul{padding-left:16px}
+#experimentPage .experiment-nav .operation-guide-mini .guide-popup li{margin:3px 0;line-height:1.6}
+#experimentPage .experiment-nav .operation-guide-mini .guide-popup kbd{
+  background:#eef4ff;border:1px solid #dbe8fb;border-radius:4px;
+  padding:1px 5px;font-size:11.5px;color:#1677ff;
+  font-family:"Times New Roman",Times,serif;
+}
+
+/* ---- 右侧空白处的「返回顶端」箭头：往下滚超过一屏才出现 ---- */
+.c2-top{
+  position:fixed;right:38px;bottom:74px;z-index:45;
+  width:44px;height:44px;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:0;border-radius:50%;
+  color:#7b8a9c;cursor:pointer;
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .26s ease, transform .26s ease, color .18s ease, background-color .18s ease;
+}
+.c2-top.show{opacity:1;transform:none;pointer-events:auto}
+.c2-top:hover{color:#1677ff;background:rgba(22,119,255,.09)}
+
+/* ============ 左侧栏（浅色，可折叠；收起后只剩左上角那枚 logo） ============
+   顶上那个「小方块」原来是个 ◀ 折叠按钮，现在换成品牌 logo：
+   它一直待在窗口左上角，点一下就收起 / 拉开左侧栏，所以侧栏平时可以收起来。 */
+#experimentPage .sidebar{
+  width:176px;min-width:0;
+  background:#f4f4f4;
+  border-right:1px solid #e6e6e6;
+  padding:12px 10px;
+  overflow:visible;
+  transition:width .26s cubic-bezier(.4,0,.2,1);
+}
+#experimentPage .sidebar.collapsed{width:56px;padding:0}
+#experimentPage .sidebar .toggle-btn{
+  left:0;right:auto;top:0;width:56px;height:56px;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:0;border-radius:12px;
+  cursor:pointer;overflow:visible;
+  transition:background-color .16s ease;
+}
+/* 原来的 ◀ 箭头不要了，位置让给 logo */
+#experimentPage .sidebar .toggle-btn::before{content:"";display:none}
+#experimentPage .sidebar .toggle-btn:hover{background:#e9f2ff}
+#experimentPage .sidebar .toggle-btn:hover::before{content:"";display:none}
+#experimentPage .sidebar .toggle-btn img{
+  display:block;width:32px;height:32px;
+  filter:drop-shadow(0 1px 2px rgba(15,39,68,.22));
+}
+#experimentPage .sidebar .menu-container{
+  margin-top:52px;padding:0;
+  display:flex;flex-direction:column;gap:4px;
+  opacity:1;pointer-events:auto;transition:opacity .18s ease;
+}
+#experimentPage .sidebar.collapsed .menu-container{opacity:0;pointer-events:none}
+
+/* 顶栏里原来那行实验名（「牛顿黏性定律实验」…）删掉，只留左侧的「返回首页」 */
+#experimentPage .experiment-nav .experiment-title{display:none}
+#experimentPage .menu-item{
+  width:100%;height:40px;padding:0 12px;
+  display:flex;align-items:center;gap:9px;
+  background:transparent;border:0;border-radius:9px;
+  color:#4e5d6f;font-family:var(--c2-serif);font-size:14px;font-weight:500;
+  text-align:left;position:relative;transition:.16s;
+}
+#experimentPage .menu-item:hover{background:#eef3f9;color:#16202c;border-left:0}
+#experimentPage .menu-item.active{
+  background:#fff;color:#1677ff;font-weight:700;border-left:0;
+  box-shadow:0 1px 2px rgba(20,40,80,.06);
+}
+#experimentPage .menu-item.active::before{
+  content:"";position:absolute;left:-10px;top:9px;bottom:9px;width:3px;
+  border-radius:0 3px 3px 0;background:#1677ff;
+}
+
+/* ============ 原理页：hero + tab 条 + 正文 ============ */
+#experimentPage #principlePage{background:#f4f4f4}
+#experimentPage #principlePage.active{display:block;overflow-y:auto}
+.c2-hero{
+  position:relative;height:392px;overflow:hidden;background:#0a1018;
+  background-size:cover;background-position:center center;
+  filter:saturate(.95) brightness(.97);
+}
+.c2-hero-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(100deg,
+    rgba(8,15,26,.90) 0%, rgba(8,15,26,.78) 30%,
+    rgba(8,15,26,.42) 52%, rgba(8,15,26,.14) 72%, rgba(8,15,26,.22) 100%);
+}
+.c2-hero-inner{
+  position:relative;z-index:2;height:100%;color:#fff;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 56px 52px;max-width:900px;
+}
+.c2-hero-title{
+  font-size:40px;font-weight:800;letter-spacing:.4px;line-height:1.2;margin:0;
+  text-shadow:0 2px 18px rgba(0,0,0,.45);
+}
+.c2-hero-sub{
+  max-width:630px;margin:14px 0 0;
+  font-family:"Noto Serif SC","Source Han Serif SC",SimSun,serif;
+  font-size:15px;font-weight:350;line-height:1.95;letter-spacing:.3px;
+  color:rgba(255,255,255,.80);
+}
+.c2-tabs{
+  position:absolute;left:0;right:0;bottom:0;height:52px;z-index:3;
+  display:flex;align-items:flex-end;
+  border-bottom:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(to top, rgba(8,15,26,.88) 0%, rgba(8,15,26,.44) 62%, rgba(8,15,26,0) 100%);
+}
+.c2-tab{
+  flex:1;height:100%;display:flex;align-items:center;justify-content:center;
+  position:relative;cursor:pointer;white-space:nowrap;text-decoration:none;
+  font-family:var(--c2-serif);font-size:14.5px;letter-spacing:.3px;
+  color:rgba(255,255,255,.60);border-radius:8px 8px 0 0;
+  transition:color .18s ease, background-color .18s ease, transform .18s ease;
+}
+.c2-tab::after{
+  content:"";position:absolute;left:50%;right:50%;bottom:0;height:2px;
+  background:#1677ff;border-radius:2px;transition:left .22s ease,right .22s ease;
+}
+.c2-tab:hover{color:#fff;background:rgba(255,255,255,.08);transform:translateY(-3px)}
+.c2-tab:hover::after{left:26%;right:26%}
+.c2-tab.active{
+  color:#fff;font-weight:600;
+  background:linear-gradient(to top, rgba(255,255,255,.13), rgba(255,255,255,.03));
+}
+.c2-tab.active::after{left:30%;right:30%}
+
+.c2-doc{padding:38px 56px 80px;max-width:1040px}
+.c2-sec{position:relative;margin-bottom:42px;scroll-margin-top:8px}
+.c2-sec > h3{
+  font-size:24px;font-weight:700;letter-spacing:.2px;color:var(--c2-ink);
+  margin:0 0 18px;
+}
+.c2-sec p{
+  font-family:var(--c2-serif);font-size:15.5px;line-height:1.95;letter-spacing:.2px;
+  color:var(--c2-body);margin:0 0 12px;
+}
+.c2-note{font-size:12px!important;color:#8a97a8!important;line-height:1.8!important}
+
+/* ---- 装置四卡：默认只有标题，悬停出介绍（照首页 .experiment-card 的做法） ---- */
+.c2-rig-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:6px 0 14px;
+  --c2-lift:74px;   /* 悬停时标题上浮的距离 ≈ 描述块高度（按最长 3 行描述留量） */
+}
+.c2-rig{
+  position:relative;height:212px;border-radius:14px;overflow:hidden;
+  background:#0f2744;border:1px solid rgba(15,39,68,.10);
+  box-shadow:0 6px 22px rgba(15,39,68,.10);cursor:default;
+  transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+.c2-rig:hover{transform:translateY(-6px);border-color:transparent;box-shadow:0 22px 48px rgba(15,39,68,.22)}
+.c2-rig-media{position:absolute;inset:0}
+.c2-rig-media img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  opacity:.92;filter:blur(3px) saturate(.85) contrast(1.02) brightness(.82);
+  transform:scale(1.12);
+  transition:opacity .42s ease,filter .42s ease,transform .6s cubic-bezier(.2,.6,.2,1);
+}
+.c2-rig:hover .c2-rig-media img{
+  opacity:1;filter:blur(0) saturate(.98) contrast(1.04) brightness(1);transform:scale(1.15);
+}
+.c2-rig-media::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(9,23,40,.30) 0%, rgba(9,23,40,.34) 38%,
+    rgba(9,23,40,.66) 72%, rgba(9,23,40,.90) 100%);
+  transition:background .28s ease;
+}
+.c2-rig:hover .c2-rig-media::after{
+  background:linear-gradient(180deg,
+    rgba(9,23,40,.16) 0%, rgba(9,23,40,.20) 38%,
+    rgba(9,23,40,.72) 72%, rgba(9,23,40,.95) 100%);
+}
+/* 默认：只在左下角放标题；悬停：标题上浮、描述从底边淡入 */
+.c2-rig-title{
+  position:absolute;left:16px;right:16px;bottom:16px;z-index:3;margin:0;
+  font-size:17px;font-weight:800;letter-spacing:.6px;line-height:1.25;
+  color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.42);
+  transition:transform .3s cubic-bezier(.2,.7,.2,1);
+}
+.c2-rig:hover .c2-rig-title{transform:translateY(calc(-1 * var(--c2-lift)))}
+.c2-rig-desc{
+  position:absolute;left:16px;right:16px;bottom:14px;z-index:3;margin:0;
+  font-family:var(--c2-serif);font-size:11.5px;line-height:1.65;
+  color:rgba(255,255,255,.88);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .28s ease, transform .28s ease;
+}
+.c2-rig:hover .c2-rig-desc{opacity:1;transform:translateY(0)}
+.c2-rig-desc i{font-family:"Times New Roman",Times,serif;font-style:italic}
+.c2-rig-tag{
+  position:absolute;left:16px;top:14px;z-index:2;
+  font-family:"Times New Roman",Times,serif;font-size:11.5px;letter-spacing:.6px;
+  color:rgba(255,255,255,.62);
+}
+
+/* ---- 把旧版「现象观察」等内容统一成 C 方案的排版（保留全部文字） ---- */
+.c2-legacy .principle-section{
+  background:transparent!important;border:0!important;border-left:0!important;
+  padding:0!important;margin:0 0 40px!important;
+}
+.c2-legacy .principle-section h2,
+.c2-legacy .principle-section h3,
+.c2-legacy .principle-section h4{
+  font-size:24px!important;color:var(--c2-ink)!important;
+  margin:0 0 18px!important;padding:0!important;border:0!important;line-height:1.3!important;
+}
+.c2-legacy .principle-section h4{font-size:17px!important;margin:22px 0 12px!important}
+.c2-legacy .principle-section p,
+.c2-legacy .principle-section li{
+  font-family:var(--c2-serif)!important;font-size:15.5px!important;line-height:1.95!important;
+  color:var(--c2-body)!important;letter-spacing:.2px!important;
+}
+.c2-legacy .principle-section ol,
+.c2-legacy .principle-section ul{padding-left:22px!important;margin:10px 0 0!important}
+.c2-legacy .principle-section li{margin-bottom:6px!important}
+.c2-legacy .principle-section strong{color:var(--c2-ink)!important}
+/* 旧版内联彩色小卡片 → 中性浅底卡 */
+.c2-legacy .principle-section [style*="rgba(0,212,255"],
+.c2-legacy .principle-section [style*="rgba(255,152,0"]{
+  background:#fbfcfe!important;border:1px solid #e6e6e6!important;border-radius:10px!important;
+  padding:13px 15px!important;
+}
+.c2-legacy .principle-section [style*="dashed"]{
+  background:#f4f7fb!important;border:1px dashed #d8e2ee!important;border-radius:8px!important;
+  color:#4e5d6f!important;font-size:12.5px!important;
+}
+.c2-legacy .principle-section [style*="dashed"] b{color:#16202c!important}
+/* 块级公式居中独立成行，不显示外框。 */
+.c2-legacy .formula-box{
+  display:block;text-align:center;
+  background:none!important;border:0!important;border-radius:0!important;
+  box-shadow:none!important;padding:0!important;margin:22px 0 24px!important;
+  font:600 20px/1.7 "Times New Roman",Times,serif!important;color:#16202c!important;
+  letter-spacing:.2px;
+}
+/* 原生 MathML 块级公式容器的字号与居中布局。 */
+.c2-legacy .formula-box.c2-math-block{
+  font:400 17px/1 "Times New Roman",Times,serif!important;
+  letter-spacing:0;
+}
+.c2-legacy .formula-box math[display="block"]{margin:0!important}
+.c2-legacy .formula-box math{color:#16202c}
+/* 行内公式字号与正文协调。 */
+.c2-legacy .principle-section .c2-math-inline{white-space:nowrap}
+.c2-legacy .principle-section .c2-math-inline math{font-size:1.05em}
+
+/* ============ 线图模拟：深色三栏 ============ */
+#c2off #lineSimPage .control-panel{
+  width:300px;min-width:300px;max-width:300px;
+  background:#121b25;border-right:1px solid #1f2c3a;padding:14px 16px;
+}
+#c2off #lineSimPage .control-panel h3{
+  font-size:13px;font-weight:600;color:#e7eef7;letter-spacing:.4px;
+  margin:0 0 6px;padding:0 0 10px;border-bottom:1px solid #1f2c3a;
+}
+#c2off #lineSimPage .control-panel h4{
+  font-size:12px;font-weight:600;color:#67788c;letter-spacing:.6px;margin:16px 0 9px;
+}
+#c2off #lineSimPage .param-group{padding:11px 0 13px;border-bottom:1px solid #18222e}
+#c2off #lineSimPage .param-group:last-child{border-bottom:0}
+#c2off #lineSimPage .param-label{display:flex;align-items:baseline;gap:8px;margin-bottom:9px}
+#c2off #lineSimPage .param-symbol{font-size:13px;color:#93a4b8}
+#c2off #lineSimPage .param-value{
+  margin-left:auto;font:600 15px/1 "Times New Roman",Times,serif;color:#e7eef7;
+}
+#c2off #lineSimPage input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;cursor:pointer;margin:0;
+}
+#c2off #lineSimPage input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:#243343}
+#c2off #lineSimPage input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#4aa8ff;
+  border:2px solid #0d141c;margin-top:-5px;box-shadow:0 0 0 3px rgba(74,168,255,.18);
+}
+#c2off #lineSimPage input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:#243343}
+#c2off #lineSimPage input[type=range]::-moz-range-thumb{
+  width:14px;height:14px;border:2px solid #0d141c;border-radius:50%;background:#4aa8ff;
+}
+#c2off #lineSimPage .preset-grid{gap:7px}
+#c2off #lineSimPage .preset-btn{
+  background:#16202c;border:1px solid #1f2c3a;border-radius:8px;color:#93a4b8;
+  font-family:"Times New Roman",Times,"Microsoft YaHei",serif;font-size:12.5px;padding:8px 6px;
+  transition:.16s;
+}
+#c2off #lineSimPage .preset-btn:hover{border-color:#2f7fd6;color:#e7eef7}
+#c2off #lineSimPage .preset-btn.active,
+#c2off #lineSimPage .preset-btn.on{border-color:#4aa8ff;background:#132a3f;color:#cfe6ff;font-weight:600}
+#c2off #lineSimPage .canvas-area{background:#0d141c;border-left:1px solid #1f2c3a;border-right:1px solid #1f2c3a}
+#c2off #lineSimPage .data-panel{
+  width:310px;min-width:310px;max-width:310px;
+  background:#121b25;border-left:1px solid #1f2c3a;padding:14px 16px;
+}
+#c2off #lineSimPage .data-panel h3{
+  font-size:13px;font-weight:600;color:#e7eef7;letter-spacing:.4px;
+  margin:0 0 6px;padding:0 0 10px;border-bottom:1px solid #1f2c3a;
+}
+#c2off #lineSimPage .data-card{
+  background:#16202c;border:1px solid #1f2c3a;border-radius:10px;padding:11px 13px;
+  display:flex;align-items:baseline;gap:8px;margin-bottom:9px;
+}
+#c2off #lineSimPage .data-label{font-size:12.5px;color:#93a4b8}
+#c2off #lineSimPage .data-value{
+  margin-left:auto;font:700 17px/1 "Times New Roman",Times,serif;color:#dcecff;
+}
+#c2off #lineSimPage .data-unit{font:400 11.5px/1 "Times New Roman",Times,serif;color:#67788c;margin-left:4px}
+#c2off #lineSimPage .chart-container{background:#16202c;border:1px solid #1f2c3a;border-radius:10px;padding:10px 12px;margin-top:16px}
+#c2off #lineSimPage .bottom-controls{gap:8px}
+#c2off #lineSimPage .ctrl-btn,
+#c2off #lineSimPage .mode-toggle-btn{
+  border-radius:8px;border:1px solid #1f2c3a;background:#16202c;color:#e7eef7;
+  font-family:"Times New Roman",Times,"Microsoft YaHei",serif;font-size:12.5px;font-weight:600;height:34px;
+}
+#c2off #lineSimPage .ctrl-btn:hover,
+#c2off #lineSimPage .mode-toggle-btn:hover{border-color:#2f7fd6}
+#c2off #lineSimPage .ctrl-btn.play-pause{background:#35d39a;border-color:#35d39a;color:#062218}
+#c2off #lineSimPage ::-webkit-scrollbar{width:8px}
+#c2off #lineSimPage ::-webkit-scrollbar-thumb{background:#243343;border-radius:4px}
+
+/* ============ 3D 模拟：深色视口 + 深色浮层 ============ */
+#c2off [id="3dSimPage"]{background:#0d141c;position:relative}
+#c2off [id="3dSimPage"] .control-panel{
+  background:rgba(18,27,37,.92)!important;
+  border-left:1px solid #1f2c3a!important;
+  backdrop-filter:blur(10px);
+}
+#c2off [id="3dSimPage"] .scene-panel{color:#e7eef7}
+#c2off [id="3dSimPage"] .panel-section{
+  background:#16202c!important;border:1px solid #1f2c3a!important;border-radius:10px;
+}
+#c2off [id="3dSimPage"] .scene-panel h3,
+#c2off [id="3dSimPage"] .panel-section h3{
+  font-size:12px;color:#93a4b8!important;font-weight:600;letter-spacing:.6px;margin-bottom:8px;
+}
+#c2off [id="3dSimPage"] .control-group label{color:#93a4b8!important;font-size:12.5px}
+#c2off [id="3dSimPage"] .value-display{color:#dcecff!important;font-family:"Times New Roman",Times,serif}
+#c2off [id="3dSimPage"] .stat-card{
+  background:#101a24!important;border:1px solid #1f2c3a!important;border-radius:9px;
+  color:#93a4b8!important;font-size:12px;
+}
+#c2off [id="3dSimPage"] .stat-card .value{
+  color:#dcecff!important;font-family:"Times New Roman",Times,serif;font-weight:700;
+}
+#c2off [id="3dSimPage"] .action-btn{
+  border-radius:8px;border:1px solid #2b3a4d!important;background:#1b2635!important;
+  color:#e7eef7!important;font-size:12.5px;font-weight:600;
+}
+#c2off [id="3dSimPage"] .action-btn:not(.stop):not([disabled]){
+  background:#35d39a!important;border-color:#35d39a!important;color:#062218!important;
+}
+#c2off [id="3dSimPage"] .action-btn.stop{background:#3a2029!important;color:#ffb3b3!important;border-color:#5a2b36!important}
+#c2off [id="3dSimPage"] .action-btn:hover{box-shadow:none;transform:none}
+#c2off [id="3dSimPage"] .legend-item{color:#93a4b8!important;font-size:12px;background:transparent!important;border-color:#1f2c3a!important}
+#c2off [id="3dSimPage"] input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:#243343}
+#c2off [id="3dSimPage"] input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#4aa8ff;
+  border:2px solid #0d141c;margin-top:-5px;
+}
+
+/* 窄屏：装置四卡折成两列 / 一列 */
+@media (max-width:1180px){
+  .c2-rig-grid{grid-template-columns:repeat(2,1fr);--c2-lift:74px}
+}
+@media (max-width:820px){
+  .c2-hero{height:340px}
+  .c2-hero-inner{padding:0 24px 52px}
+  .c2-hero-title{font-size:30px}
+  .c2-doc{padding:26px 20px 64px}
+  .c2-rig-grid{grid-template-columns:1fr}
+  .c2-tab{font-size:13px}
+}
+
+/* ===================================================================
+   装置四卡：本节内容来自旧版原理页，上面那批 .c2-legacy 覆盖规则都带
+   !important，所以卡片自己的几条也必须带 !important 才能压得住。
+   =================================================================== */
+.c2-legacy .principle-section .c2-rig-grid{margin:6px 0 14px!important}
+.c2-legacy .principle-section .c2-rig-title{
+  position:absolute!important;left:16px!important;right:16px!important;bottom:16px!important;
+  margin:0!important;padding:0!important;border:0!important;
+  font-size:17px!important;font-weight:800!important;line-height:1.25!important;
+  color:#fff!important;text-shadow:0 2px 18px rgba(0,0,0,.42)!important;
+}
+.c2-legacy .principle-section .c2-rig-desc{
+  position:absolute!important;left:16px!important;right:16px!important;bottom:14px!important;
+  margin:0!important;padding:0!important;border:0!important;
+  font-family:var(--c2-serif)!important;font-size:11.5px!important;line-height:1.65!important;
+  letter-spacing:.1px!important;color:rgba(255,255,255,.88)!important;
+}
+.c2-legacy .principle-section .c2-rig-desc i{font-family:"Times New Roman",Times,serif!important;font-style:italic!important}
+.c2-legacy .principle-section .c2-rig-tag{
+  margin:0!important;padding:0!important;border:0!important;
+  font-family:"Times New Roman",Times,serif!important;font-size:11.5px!important;
+  color:rgba(255,255,255,.62)!important;letter-spacing:.6px!important;
+}
+.c2-legacy .principle-section .c2-note{font-size:12px!important;color:#8a97a8!important;line-height:1.8!important}
+
+/* ===================================================================
+   现象观察：扇形表盘（拖动切换变量 → 右侧换成该变量的现象）
+   —— 这里的规则都带 .c2-legacy .principle-section 前缀 + !important，
+      否则压不住上面那批「旧内容重排」规则（同权重时后者胜）。
+   =================================================================== */
+.c2-obs{
+  display:grid;grid-template-columns:300px minmax(0,1fr);gap:34px;
+  align-items:start;margin:2px 0 0;
+}
+.c2-fan{position:relative;outline:none;user-select:none;-webkit-user-select:none}
+.c2-fan-dial{
+  position:relative;width:300px;height:186px;
+  touch-action:none;cursor:grab;
+}
+.c2-fan-dial:active{cursor:grabbing}
+.c2-fan-scale{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible}
+.c2-fan-wedge{
+  fill:#eef2f8;stroke:#e0e5ee;stroke-width:1;
+  transition:fill .26s ease,stroke .26s ease;
+}
+.c2-fan-wedge.on{fill:#dcebff;stroke:#b4d0f5}
+.c2-fan-wedge:hover{fill:#e6ecf6}
+.c2-fan-wedge.on:hover{fill:#d3e5ff}
+.c2-fan-item{
+  position:absolute;transform:translate(-50%,-50%);
+  width:44px;text-align:center;cursor:pointer;
+}
+.c2-fan-item b{
+  font-family:"Times New Roman",Times,serif;font-style:italic;font-weight:700;
+  font-size:19px;line-height:1;color:#9aa6b6;
+  transition:color .26s ease;
+}
+.c2-fan-item.on b{color:#1677ff}
+.c2-fan-item:hover b{color:#4b5a6b}
+.c2-fan-name{
+  margin:2px 0 0!important;text-align:center;
+  font-family:var(--c2-serif)!important;font-size:14px!important;
+  color:#16202c!important;letter-spacing:.3px!important;line-height:1.5!important;
+}
+.c2-fan-name b{
+  font-family:"Times New Roman",Times,serif;font-style:italic;font-weight:700;
+  font-size:16px;color:#1677ff;margin-right:5px;
+}
+
+.c2-obs-stage{min-width:0}
+.c2-obs-slides{display:grid}
+.c2-obs-slide{
+  grid-area:1/1;opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .32s ease, transform .32s ease;
+}
+.c2-obs-slide.on{opacity:1;transform:none;pointer-events:auto}
+.c2-legacy .principle-section .c2-obs-head{
+  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0 0 16px;
+}
+.c2-legacy .principle-section .c2-obs-head h4{
+  font-size:19px!important;font-weight:700!important;color:var(--c2-ink)!important;
+  margin:0!important;line-height:1.3!important;border:0!important;padding:0!important;
+}
+.c2-legacy .principle-section .c2-obs-head h4 i{
+  font-family:"Times New Roman",Times,serif;font-style:italic;font-size:22px;
+}
+.c2-legacy .principle-section .c2-obs-cond{
+  font-family:var(--c2-serif)!important;font-size:12.5px!important;
+  color:#98a4b4!important;line-height:1.4!important;border:0;background:none;padding:0;
+}
+.c2-legacy .principle-section .c2-obs-cols{
+  display:grid;grid-template-columns:1fr 1fr;gap:0 34px;
+}
+.c2-legacy .principle-section .c2-obs-col{
+  border:0;border-top:1px solid #e6e6e6;border-radius:0;background:none;
+  padding:13px 0 0;
+}
+.c2-legacy .principle-section .c2-obs-col.up{border-top-color:rgba(22,119,255,.42)}
+.c2-legacy .principle-section .c2-obs-col.down{border-top-color:rgba(180,124,20,.42)}
+.c2-legacy .principle-section .c2-obs-label{
+  font-size:13.5px!important;font-weight:700!important;line-height:1.5!important;
+  margin:0 0 8px!important;
+}
+.c2-legacy .principle-section .c2-obs-col.up .c2-obs-label{color:#1677ff!important}
+.c2-legacy .principle-section .c2-obs-col.down .c2-obs-label{color:#a9741a!important}
+.c2-legacy .principle-section .c2-obs-col ol{padding-left:20px!important;margin:0!important}
+.c2-legacy .principle-section .c2-obs-col li{
+  font-size:14.5px!important;line-height:1.85!important;
+  color:var(--c2-body)!important;margin:0 0 5px!important;
+}
+.c2-legacy .principle-section .c2-obs-col li:last-child{margin-bottom:0!important}
+
+@media (max-width:900px){
+  .c2-obs{grid-template-columns:minmax(0,1fr);gap:18px}
+  /* 表盘保持 300×172 的原尺寸：标签是按设计坐标绝对定位的，改尺寸会错位 */
+  .c2-fan-dial{margin:0 auto}
+  .c2-fan-name,.c2-fan-hint{max-width:300px;margin-left:auto!important;margin-right:auto!important}
+  .c2-legacy .principle-section .c2-obs-cols{grid-template-columns:minmax(0,1fr)}
+}
+
+/* 深色主题覆盖：为硬编码浅色背景及组件提供对应深色规则。 */
+
+/* ---- 1. 原理页：把 C 方案的浅色 token 换成深色 ----
+   正文全部用 var(--c2-ink) / var(--c2-body) / var(--c2-line) 上色，
+   覆盖变量即可整页跟随，不必逐条改组件。 ---- */
+body.dark-theme #experimentPage #principlePage{
+  --background:#0d141c;
+  --surface:#121b25;
+  --surface-alt:#16202c;
+  --surface-hover:#1b2635;
+  --border:#1f2c3a;
+  --border-light:#1a2533;
+  --border-focus:#4aa8ff;
+  --text-primary:#e7eef7;
+  --text-secondary:#93a4b8;
+  --text-muted:#93a4b8;
+  --text-hint:#67788c;
+  --primary:#e7eef7;
+  --primary-hover:#c9d6e4;
+  --accent:#4aa8ff;
+  --accent-hover:#2f7fd6;
+  --c2-ink:#e7eef7;
+  --c2-body:#c2cedd;
+  --c2-line:#1f2c3a;
+  --c2-card:#121b25;
+  --c2-accent:#4aa8ff;
+  background:#0d141c;
+  color:#e7eef7;
+}
+
+/* ---- 2. 顶栏 ---- */
+body.dark-theme #experimentPage .experiment-nav{
+  background:#121b25;
+  border-bottom-color:#1f2c3a;
+}
+body.dark-theme #experimentPage .experiment-title{ color:#e7eef7; }
+body.dark-theme #experimentPage .back-btn,
+body.dark-theme #experimentPage .nav-right .qr-btn,
+body.dark-theme #experimentPage .experiment-nav .operation-guide-mini .guide-icon{
+  background:#16202c;
+  border-color:#1f2c3a;
+  color:#93a4b8;
+}
+body.dark-theme #experimentPage .back-btn:hover,
+body.dark-theme #experimentPage .nav-right .qr-btn:hover,
+body.dark-theme #experimentPage .experiment-nav .operation-guide-mini .guide-icon:hover{
+  border-color:#4aa8ff;
+  color:#4aa8ff;
+  background:rgba(74,168,255,.14);
+}
+/* 右上角「操作指引」弹层 */
+body.dark-theme #experimentPage .experiment-nav .operation-guide-mini .guide-popup{
+  background:#121b25;
+  border-color:#1f2c3a;
+  color:#c2cedd;
+  box-shadow:0 16px 36px rgba(0,0,0,.55);
+}
+body.dark-theme #experimentPage .experiment-nav .operation-guide-mini .guide-popup h4{ color:#e7eef7; }
+body.dark-theme #experimentPage .experiment-nav .operation-guide-mini .guide-popup kbd{
+  background:rgba(74,168,255,.14);
+  border-color:rgba(74,168,255,.3);
+  color:#4aa8ff;
+}
+
+/* ---- 3. 左侧栏 ---- */
+body.dark-theme #experimentPage .sidebar{
+  background:#121b25;
+  border-right-color:#1f2c3a;
+}
+body.dark-theme #experimentPage .sidebar .toggle-btn{
+  background:transparent;
+  border-bottom-color:#1f2c3a;
+}
+body.dark-theme #experimentPage .sidebar .toggle-btn:hover{ background:rgba(74,168,255,.14); }
+body.dark-theme #experimentPage .menu-item{ color:#93a4b8; }
+body.dark-theme #experimentPage .menu-item:hover{ background:#1b2635; color:#e7eef7; }
+body.dark-theme #experimentPage .menu-item.active{
+  background:#16202c;
+  color:#4aa8ff;
+  box-shadow:0 1px 2px rgba(0,0,0,.45);
+}
+
+/* ---- 4. 原理页里残留的硬编码浅色 ---- */
+/* 「现象观察」合并滚轮：变量名 / 分隔线 / 说明文字 */
+body.dark-theme .c2-legacy .principle-section .c2-obs-col{ border-top-color:#1f2c3a; }
+body.dark-theme .c2-legacy .principle-section .c2-obs-cond{ color:#93a4b8!important; }
+body.dark-theme .c2-fan-item b{ color:#c2cedd; }
+body.dark-theme .c2-fan-item:hover b{ color:#93a4b8; }
+body.dark-theme .c2-fan-item.on b{ color:#4aa8ff; }
+body.dark-theme .c2-legacy .principle-section .c2-note,
+body.dark-theme .c2-note{ color:#93a4b8!important; }
+/* 公式（原生MathML）与「提示」小方块 */
+body.dark-theme .c2-legacy .formula-box math{ color:#e7eef7; }
+body.dark-theme .c2-legacy .principle-section [style*="dashed"]{
+  background:#16202c!important;
+  border-color:#1f2c3a!important;
+  color:#93a4b8!important;
+}
+body.dark-theme .c2-legacy .principle-section [style*="dashed"] b{ color:#e7eef7!important; }
+/* 旧版内联浅色卡片：只压背景与三条边，保留左侧那条强调色 */
+body.dark-theme #experimentPage #principlePage .principle-section[style*="#f8fbff"],
+body.dark-theme #experimentPage #principlePage .principle-section[style*="#ffffff"]{
+  background:#121b25!important;
+  border-top-color:#1f2c3a!important;
+  border-right-color:#1f2c3a!important;
+  border-bottom-color:#1f2c3a!important;
+}
+body.dark-theme #experimentPage #principlePage .principle-section h2,
+body.dark-theme #experimentPage #principlePage .principle-section h3{ color:#e7eef7!important; }
+body.dark-theme #experimentPage #principlePage .principle-section p,
+body.dark-theme #experimentPage #principlePage .principle-section li{ color:#c2cedd!important; }
+

@@ -1,0 +1,14 @@
+
+#inquiryPage .module4-ai-coach{margin:0 0 14px;padding:12px 14px;border:1px solid var(--accent);border-radius:8px;background:var(--surface);color:var(--text-primary)}
+#inquiryPage .module4-ai-coach[hidden]{display:none!important}
+#inquiryPage .module4-ai-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+#inquiryPage .module4-ai-title{font-size:16px}
+#inquiryPage .module4-ai-state,#inquiryPage .module4-ai-next,#inquiryPage .module4-ai-evidence,#inquiryPage .module4-ai-status{margin:5px 0;font-size:13px;line-height:1.6}
+#inquiryPage .module4-ai-next{padding-left:9px;border-left:3px solid var(--accent)}
+#inquiryPage .module4-ai-badge{font-size:12px;color:var(--accent)}
+#inquiryPage .module4-ai-actions{display:flex;flex-wrap:wrap;gap:8px}
+#inquiryPage .module4-ai-actions button{min-height:38px;padding:7px 11px;border:1px solid var(--border);border-radius:6px;background:var(--surface-alt);color:var(--text-primary);cursor:pointer}
+#inquiryPage .module4-ai-actions button:first-child{background:var(--accent);color:#fff;border-color:var(--accent)}
+#inquiryPage .module4-ai-gotorow{margin:6px 0 2px}
+#inquiryPage .module4-ai-gotorow button{min-height:auto;padding:3px 12px;font-size:12px;border:1px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent);cursor:pointer}
+#inquiryPage .module4-ai-gotorow button:hover{background:var(--accent);color:#fff}

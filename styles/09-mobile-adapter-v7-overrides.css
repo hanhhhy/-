@@ -1,0 +1,43 @@
+
+/* 移动端引导、助手及进阶任务布局覆盖。 */
+@media screen and (max-width: 768px), screen and (max-width: 1366px) and (hover: none) and (pointer: coarse) {
+  html.viscosity-mobile #ai-launcher .ai-launcher-label { font-size: 10px; }
+
+  html.viscosity-mobile #ai-panel { height: var(--mobile-visible-height, 100dvh); top: var(--mobile-visible-top, 0px); max-height: none; }
+  html.viscosity-mobile #ai-panel #ai-quick-menu { left: 12px; right: 12px; bottom: 132px; max-height: min(40dvh, 260px); }
+  html.viscosity-mobile #ai-panel #ai-ask-custom { flex-wrap: wrap; }
+  html.viscosity-mobile #ai-panel #ai-ask-input { min-width: 0; flex: 1 1 160px; min-height: 44px; font-size: 16px; }
+  html.viscosity-mobile #ai-panel #ai-ask-send { min-width: 72px; min-height: 44px; }
+  html.viscosity-mobile #ai-panel .ai-suggest-item { min-height: 48px; }
+  html.viscosity-mobile #inquiryPage,
+  html.viscosity-mobile #inquiryPage .iqc-shell,
+  html.viscosity-mobile #inquiryPage .iqc-card,
+  html.viscosity-mobile #inquiryPage .iqc-band,
+  html.viscosity-mobile #inquiryPage .v-card { min-width: 0; max-width: 100%; box-sizing: border-box; }
+  html.viscosity-mobile #inquiryPage .iqc-grid,
+  html.viscosity-mobile #inquiryPage .iqc-task-grid,
+  html.viscosity-mobile #inquiryPage .v-two { grid-template-columns: minmax(0, 1fr) !important; }
+  html.viscosity-mobile #inquiryPage .v-layout { display: flex; flex-direction: column; }
+  html.viscosity-mobile #inquiryPage .v-side { order: 2; }
+  html.viscosity-mobile #inquiryPage .iqc-table-wrap,
+  html.viscosity-mobile #inquiryPage .iqc-plot,
+  html.viscosity-mobile #inquiryPage .v-table-wrap,
+  html.viscosity-mobile #inquiryPage .v-plot { max-width: 100%; overflow-x: auto; }
+  html.viscosity-mobile #inquiryPage .iqc-plot svg,
+  html.viscosity-mobile #inquiryPage .v-plot svg { min-width: 440px; max-width: none; }
+  html.viscosity-mobile #inquiryPage input,
+  html.viscosity-mobile #inquiryPage select,
+  html.viscosity-mobile #inquiryPage textarea { max-width: 100%; box-sizing: border-box; font-size: 16px; }
+  html.viscosity-mobile #inquiryPage button { min-height: 44px; touch-action: manipulation; }
+}
+@media screen and (max-width: 480px) {
+  html.viscosity-mobile #ai-panel,
+  html.viscosity-mobile #ai-panel.wide,
+  html.viscosity-mobile #ai-panel.floating { top: var(--mobile-visible-top, 0px); right: 0; bottom: auto; left: 0; width: 100vw; max-width: 100vw; height: var(--mobile-visible-height, 100dvh); border-radius: 0; }
+  html.viscosity-mobile #ai-panel-header { height: 56px; min-height: 56px; padding: max(10px, env(safe-area-inset-top)) 12px 0; }
+  html.viscosity-mobile #ai-messages { padding: 0 12px 12px; }
+  html.viscosity-mobile #ai-input-area { padding: 8px 12px max(12px, env(safe-area-inset-bottom)); }
+  html.viscosity-mobile #ai-input-row { min-height: 100px; padding: 10px 8px 8px; }
+  html.viscosity-mobile #ai-user-input { min-height: 44px; font-size: 16px; }
+}
+@media (hover: none) { html.viscosity-mobile #ai-launcher:hover { transform: none; } }

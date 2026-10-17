@@ -1,0 +1,9 @@
+
+/* 字体内嵌后，把内嵌族放到最前面 —— 这样任何一台电脑（装没装思源宋体）
+   都会用同一套字形，汉字的大小观感也就一致了。
+   内嵌族之后仍保留原栈，作为极端情况下的兜底。 */
+:root, body {
+  --c2-serif: "SourceHanSerifEmbedded", "Source Han Serif SC", "思源宋体",
+              "Noto Serif SC", "Source Han Serif CN", "Noto Serif CJK SC",
+              SimSun, "Microsoft YaHei", serif;
+}

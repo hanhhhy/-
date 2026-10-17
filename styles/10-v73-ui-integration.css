@@ -1,0 +1,4 @@
+
+#v5 .v-top .v-save {color:#e3eeee;text-align:center;max-width:36em;white-space:pre-line;font-size:13px;letter-spacing:0}
+@media(max-width:900px){#v5.v7-lab-home .v-top h2{font-size:32px!important;letter-spacing:1.5px}}
+@media print{body.v72-print-inquiry #v5 .v-top{min-height:0!important;padding:12px 0!important;background:white!important}body.v72-print-inquiry #v5 .v-top::before,body.v72-print-inquiry #v5 .v-top::after{display:none!important}body.v72-print-inquiry #v5 .v-top h2,body.v72-print-inquiry #v5 .v-top .v-save{color:black!important;text-shadow:none!important}body.v72-print-inquiry #v5 .v7-save-btn{display:none!important}}

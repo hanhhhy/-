@@ -1,0 +1,13 @@
+Preserved font notices
+
+Embedded NotoSansSC WOFF metadata:
+Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
+Version 2.04;241114210130;non-release.
+
+Source Han Serif license notice:
+Copyright 2017-2022 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
+The font software is licensed under the SIL Open Font License, Version 1.1.
+See OFL-1.1.txt.
+
+The original embedded WOFF2 is identified by the program CSS as SourceHanSerifEmbedded.
+Both font files are retained byte-for-byte.

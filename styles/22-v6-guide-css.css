@@ -1,0 +1,143 @@
+
+/* 页面内引导条：跟随子页切换始终可见，不遮挡内容（它是 .main-content 里的普通流内元素） */
+#v6GuideBar{
+  position:sticky;top:0;z-index:60;flex:0 0 auto;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:8px 14px;border-bottom:1px solid var(--border,#e6e6e6);
+  background:linear-gradient(90deg,rgba(51,129,255,.10),rgba(0,168,204,.06));
+  color:var(--text-primary,#14202e);font-size:13px;line-height:1.5;
+  box-shadow:0 1px 4px rgba(20,53,110,.06);
+}
+#v6GuideBar[data-phase="done"]{background:linear-gradient(90deg,rgba(46,160,67,.12),rgba(0,168,204,.06))}
+body.dark-theme #v6GuideBar{background:linear-gradient(90deg,rgba(0,212,255,.12),rgba(0,168,204,.05))}
+#v6GuideBar .v6gb-badge{
+  flex:none;display:inline-flex;align-items:center;gap:6px;
+  padding:3px 11px;border-radius:999px;font-weight:700;font-size:12.5px;
+  background:var(--accent,#3381ff);color:#fff;letter-spacing:.4px;
+}
+#v6GuideBar[data-phase="done"] .v6gb-badge{background:#2ea043}
+#v6GuideBar .v6gb-dots{flex:none;display:flex;align-items:center;gap:2px}
+#v6GuideBar .v6gb-dot{
+  width:9px;height:9px;border-radius:50%;background:rgba(20,53,110,.18);display:inline-block;
+}
+body.dark-theme #v6GuideBar .v6gb-dot{background:rgba(255,255,255,.22)}
+#v6GuideBar .v6gb-dot.is-done{background:#2ea043}
+#v6GuideBar .v6gb-dot.is-current{background:var(--accent,#3381ff);box-shadow:0 0 0 3px rgba(51,129,255,.22)}
+#v6GuideBar .v6gb-text{flex:1 1 220px;min-width:160px}
+#v6GuideBar .v6gb-actions{flex:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#v6GuideBar button{
+  min-height:34px;padding:5px 14px;border:1px solid var(--border,#d8dee8);border-radius:8px;
+  background:var(--surface,#fff);color:var(--text-primary,#14202e);font:inherit;font-size:13px;cursor:pointer;
+}
+#v6GuideBar button:hover{border-color:var(--accent,#3381ff);color:var(--accent,#3381ff)}
+#v6GuideBar button.v6gb-primary{background:var(--accent,#3381ff);border-color:var(--accent,#3381ff);color:#fff;font-weight:600}
+#v6GuideBar button.v6gb-primary:hover{filter:brightness(1.06);color:#fff}
+#v6GuideBar button.v6gb-ghost{background:transparent;border-color:transparent;color:var(--text-secondary,#5d6b7e);text-decoration:underline}
+#v6GuideBar button.v6gb-adv{border-color:var(--accent,#3381ff);color:var(--accent,#3381ff);font-weight:600;background:transparent}
+
+/* 引导条上的浮层：第 2 步判断题 / 第 4 步结论题
+   z-index 必须高于 #ai-panel(9999)，否则 AI 面板开着时弹层会被压在下面点不到；
+   同时低于 .qr-modal-overlay(10000) 和右下角操作指引(10001)，不抢它们的层级。 */
+.v6ovl{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px}
+.v6ovl[hidden]{display:none!important}
+.v6ovl-mask{position:absolute;inset:0;background:rgba(8,18,32,.46)}
+.v6ovl-panel{
+  position:relative;width:min(640px,96vw);max-height:86vh;overflow:auto;
+  padding:20px 22px;border-radius:14px;border:1px solid var(--border,#d8dee8);
+  background:var(--surface,#fff);color:var(--text-primary,#14202e);
+  box-shadow:0 18px 48px rgba(10,25,50,.32);font-size:14.5px;line-height:1.7;
+}
+body.dark-theme .v6ovl-panel{background:#1b1f27;border-color:#39404d}
+.v6ovl-eyebrow{margin:0 0 6px;font-size:12px;letter-spacing:1.4px;color:var(--accent,#3381ff);font-weight:700}
+.v6ovl-q{margin:0 0 14px;font-size:16.5px;font-weight:600;line-height:1.6}
+.v6ovl-opts{display:grid;gap:9px}
+.v6ovl-opts.v6ovl-two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.v6ovl-opts.v6ovl-three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.v6ovl-opt{
+  display:flex;align-items:flex-start;gap:10px;text-align:left;width:100%;
+  min-height:48px;padding:11px 13px;border:1px solid var(--border,#d8dee8);border-radius:10px;
+  background:var(--surface-alt,#f6f8fb);color:inherit;font:inherit;cursor:pointer;
+  transition:border-color .14s,background .14s,transform .14s;
+}
+.v6ovl-opt:hover:not(:disabled){border-color:var(--accent,#3381ff);transform:translateY(-1px)}
+.v6ovl-opt:disabled{cursor:default}
+.v6ovl-opt .v6ovl-key{
+  flex:none;width:24px;height:24px;border-radius:6px;display:grid;place-items:center;
+  background:rgba(51,129,255,.14);color:var(--accent,#3381ff);font-weight:700;font-size:13px;
+}
+.v6ovl-opt.is-right{border-color:#2ea043;background:rgba(46,160,67,.14)}
+.v6ovl-opt.is-right .v6ovl-key{background:#2ea043;color:#fff}
+.v6ovl-opt.is-wrong{border-color:#d64545;background:rgba(214,69,69,.12)}
+.v6ovl-opt.is-wrong .v6ovl-key{background:#d64545;color:#fff}
+.v6ovl-fb{margin:14px 0 0;padding:11px 13px;border-radius:10px;font-size:14px;line-height:1.75}
+.v6ovl-fb[hidden]{display:none!important}
+.v6ovl-fb.ok{background:rgba(46,160,67,.13);border-left:3px solid #2ea043}
+.v6ovl-fb.no{background:rgba(214,69,69,.10);border-left:3px solid #d64545}
+.v6ovl-fb.tip{background:rgba(51,129,255,.10);border-left:3px solid var(--accent,#3381ff)}
+.v6ovl-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px;flex-wrap:wrap}
+.v6ovl-actions button{
+  min-height:40px;padding:8px 16px;border:1px solid var(--border,#d8dee8);border-radius:9px;
+  background:var(--surface-alt,#f6f8fb);color:inherit;font:inherit;cursor:pointer;
+}
+.v6ovl-actions button.v6ovl-primary{background:var(--accent,#3381ff);border-color:var(--accent,#3381ff);color:#fff;font-weight:600}
+.v6ovl-actions button.v6ovl-ghost{background:transparent;border-color:transparent;color:var(--text-secondary,#5d6b7e);text-decoration:underline}
+
+/* 三个模拟板块的「得出结论」按钮 */
+.v6-conclude-host{margin:10px 0 0;text-align:center}
+.v6-conclude{
+  min-height:38px;padding:8px 18px;border:1px solid #2ea043;border-radius:999px;
+  background:rgba(46,160,67,.12);color:#1f7a34;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;
+  box-shadow:0 2px 8px rgba(31,122,52,.14);
+}
+.v6-conclude:hover{background:#2ea043;color:#fff}
+body.dark-theme .v6-conclude{color:#7fe0a0}
+body.dark-theme .v6-conclude:hover{color:#04220f}
+/* 3D 板块：按钮用 fixed 贴在控制面板下方，不占页面流（位置由脚本算） */
+#v6-conclude-host-3d{margin:0;text-align:center}
+
+/* 进阶任务面板（同上：要压得住 AI 面板 9999） */
+.v6adv-panel{
+  position:absolute;right:14px;top:64px;z-index:10000;width:min(560px,calc(100vw - 28px));
+  max-height:min(72vh,620px);overflow:auto;padding:16px 18px;border-radius:14px;
+  border:1px solid var(--border,#d8dee8);background:var(--surface,#fff);color:var(--text-primary,#14202e);
+  box-shadow:0 16px 44px rgba(10,25,50,.28);font-size:13.5px;line-height:1.65;
+}
+.v6adv-panel[hidden]{display:none!important}
+body.dark-theme .v6adv-panel{background:#1b1f27;border-color:#39404d}
+.v6adv-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.v6adv-title{margin:0 0 3px;font-size:17px}
+.v6adv-sub{margin:0;font-size:12.5px;color:var(--text-secondary,#5d6b7e)}
+.v6adv-close{
+  flex:none;width:30px;height:30px;border:1px solid var(--border,#d8dee8);border-radius:8px;
+  background:transparent;color:inherit;font-size:16px;line-height:1;cursor:pointer;
+}
+.v6adv-group{margin:14px 0 0}
+.v6adv-group h4{margin:0 0 7px;font-size:12px;letter-spacing:1.1px;color:var(--accent,#3381ff)}
+.v6adv-row{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border:1px solid var(--border,#d8dee8);border-radius:9px;background:var(--surface-alt,#f6f8fb);margin-bottom:6px}
+.v6adv-row .v6adv-tag{flex:none;font-weight:700;color:var(--accent,#3381ff);font-size:12.5px;min-width:34px}
+.v6adv-row .v6adv-name{flex:1 1 auto;min-width:0}
+.v6adv-row .v6adv-name b{display:block;font-size:13.5px}
+.v6adv-row .v6adv-name small{display:block;font-size:12px;color:var(--text-secondary,#5d6b7e);line-height:1.55}
+.v6adv-row button{
+  flex:none;min-height:32px;padding:5px 12px;border:1px solid var(--accent,#3381ff);border-radius:8px;
+  background:transparent;color:var(--accent,#3381ff);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+}
+.v6adv-row button:hover{background:var(--accent,#3381ff);color:#fff}
+.v6adv-row .v6adv-state{flex:none;min-width:32px;font-size:12px;color:var(--text-secondary,#5d6b7e);text-align:right}
+.v6adv-note{margin:12px 0 0;font-size:12px;color:var(--text-secondary,#5d6b7e)}
+
+/* 小提示（右上角，自动消失）：比弹层再高一点，保证一定看得见 */
+.v6-toast{
+  position:fixed;right:16px;top:16px;z-index:10002;max-width:min(360px,86vw);
+  padding:11px 14px;border-radius:11px;background:rgba(18,32,52,.94);color:#fff;
+  font-size:13px;line-height:1.65;box-shadow:0 12px 30px rgba(0,0,0,.3);
+}
+
+@media (max-width:768px){
+  #v6GuideBar{padding:6px 10px;font-size:12.5px;gap:7px}
+  #v6GuideBar .v6gb-text{flex:1 1 100%;order:3}
+  #v6GuideBar button{min-height:32px;padding:5px 11px;font-size:12.5px}
+  .v6ovl-panel{padding:16px 14px;border-radius:12px}
+  .v6ovl-opts.v6ovl-three{grid-template-columns:minmax(0,1fr)}
+  .v6adv-panel{left:10px;right:10px;width:auto;top:56px}
+}

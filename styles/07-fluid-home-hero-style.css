@@ -1,0 +1,337 @@
+
+/* 首页底部探究入口；home-ai-hero / ai-hero 类与顶部 home-hero 分离。 */
+.home-ai-hero {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  background: linear-gradient(103deg, #eef5ff 0%, #e2edff 38%, #d3e4fd 72%, #c7dcfb 100%);
+  background-color: #d3e4fd;
+  overflow: hidden;
+}
+
+/* 低透明度圆形背景装饰。 */
+.home-ai-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 6% 18%, rgba(255, 255, 255, 0.85) 0 22%, transparent 22.4%),
+    radial-gradient(circle at 2% 96%, rgba(122, 173, 255, 0.20) 0 30%, transparent 30.4%),
+    radial-gradient(circle at 78% 4%, rgba(255, 255, 255, 0.55) 0 16%, transparent 16.4%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-ai-hero .ai-hero-inner {
+  position: relative;
+  z-index: 2;
+  min-height: 520px;
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(460px, 1.02fr);
+  align-items: stretch;
+  text-align: left;
+}
+
+.home-ai-hero .ai-hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 24px 56px max(40px, calc((100vw - 1400px) / 2 + 40px));
+  max-width: 780px;
+}
+
+.ai-hero-tag {
+  font-size: 12px;
+  letter-spacing: 2.6px;
+  color: #5b7398;
+  margin-bottom: 20px;
+}
+
+.ai-hero-title {
+  margin: 0;
+  font-size: 50px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  line-height: 1.24;
+  color: #14356e;
+}
+
+.ai-hero-sub {
+  margin: 20px 0 0;
+  max-width: 560px;
+  font-size: 16.5px;
+  line-height: 1.85;
+  letter-spacing: 0.4px;
+  color: #4a6484;
+}
+
+.ai-hero-actions {
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-ai-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1a3c7c 0%, #2a5cac 100%);
+  color: #fff;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(20, 53, 110, 0.28);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.hero-ai-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(20, 53, 110, 0.34);
+  filter: brightness(1.05);
+}
+
+.hero-ai-btn:active { transform: translateY(0); box-shadow: 0 8px 18px rgba(20, 53, 110, 0.3); }
+.hero-ai-btn-ico { font-size: 17px; line-height: 1; }
+
+.hero-ai-hint {
+  font-size: 13px;
+  color: #6b82a3;
+  letter-spacing: 0.3px;
+}
+
+.home-ai-hero .ai-hero-media {
+  position: relative;
+  overflow: hidden;
+  /* 照片左缘通过渐变与底色衔接。 */
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #000 24%, #000 100%);
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #000 24%, #000 100%);
+}
+
+.home-ai-hero .ai-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 54% 42%;
+  display: block;
+}
+
+/* 深色主题 */
+body.dark-theme .home-ai-hero {
+  background: linear-gradient(103deg, #0b1524 0%, #101d31 45%, #142542 100%);
+  background-color: #101d31;
+}
+
+body.dark-theme .home-ai-hero::before {
+  background:
+    radial-gradient(circle at 6% 18%, rgba(0, 212, 255, 0.12) 0 22%, transparent 22.4%),
+    radial-gradient(circle at 2% 96%, rgba(0, 212, 255, 0.10) 0 30%, transparent 30.4%);
+}
+
+body.dark-theme .ai-hero-tag { color: #7f9fd0; }
+body.dark-theme .ai-hero-title { color: #eaf3ff; }
+body.dark-theme .ai-hero-sub { color: #a8bcd8; }
+body.dark-theme .hero-ai-hint { color: #8ba4c6; }
+body.dark-theme .hero-ai-btn {
+  background: linear-gradient(135deg, #00a4c8 0%, #00d4ff 100%);
+  color: #04202b;
+}
+
+/* 响应式 */
+@media (max-width: 1280px) {
+  .home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 480px; }
+  .ai-hero-title { font-size: 42px; }
+  .ai-hero-sub { font-size: 15.5px; }
+}
+
+@media (max-width: 1024px) {
+  .home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 440px; }
+  .home-ai-hero .ai-hero-inner { grid-template-columns: minmax(320px, 1fr) minmax(340px, 1fr); }
+  .home-ai-hero .ai-hero-copy { padding: 40px 20px 40px 32px; }
+  .ai-hero-title { font-size: 34px; letter-spacing: 1px; }
+  .ai-hero-sub { font-size: 14.5px; margin-top: 16px; }
+  .ai-hero-tag { font-size: 10.5px; letter-spacing: 2px; margin-bottom: 14px; }
+  .hero-ai-btn { padding: 12px 22px; font-size: 15px; }
+  .hero-ai-hint { font-size: 12px; }
+}
+
+@media (max-width: 900px) {
+  .home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 0; }
+  .home-ai-hero .ai-hero-inner { grid-template-columns: 1fr; }
+  .home-ai-hero .ai-hero-copy { padding: 40px 22px 30px; max-width: none; }
+  .ai-hero-title { font-size: 30px; }
+  .ai-hero-sub { font-size: 14px; line-height: 1.8; }
+  .home-ai-hero .ai-hero-media {
+    height: 240px;
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 26%, #000 100%);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 26%, #000 100%);
+  }
+}
+
+@media (max-width: 480px) {
+  .home-ai-hero .ai-hero-copy { padding: 30px 16px 24px; }
+  .ai-hero-title { font-size: 24px; letter-spacing: 0.5px; }
+  .ai-hero-sub { font-size: 13px; }
+  .ai-hero-actions { margin-top: 22px; gap: 10px; }
+  .hero-ai-btn { width: 100%; justify-content: center; padding: 13px 18px; font-size: 15px; }
+  /* 手机上也保留这句说明，整行居中放在按钮下方 */
+  .hero-ai-hint {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .home-ai-hero .ai-hero-media { height: 190px; }
+}
+
+
+/* 首页探究区域与原理页主视觉采用统一尺寸；隐藏标签与提示文字。 */
+.home-ai-hero,
+.home-ai-hero .ai-hero-inner { min-height: 372px; }
+
+.home-ai-hero .ai-hero-copy { padding: 34px 24px 34px max(40px, calc((100vw - 1400px) / 2 + 40px)); max-width: 900px; }
+
+.home-ai-hero .ai-hero-title,
+.home-ai-hero .ai-hero-sub,
+.home-ai-hero .hero-ai-btn,
+.home-ai-hero .hero-ai-btn * { font-family: "SourceHanSerifEmbedded", "Source Han Serif SC", "思源宋体", "Noto Serif SC", "Source Han Serif CN", SimSun, serif; }
+
+.home-ai-hero .ai-hero-title {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: 2px;
+  white-space: nowrap;      /* 主标题一定在同一行 */
+}
+
+.home-ai-hero .ai-hero-sub {
+  margin-top: 16px;
+  max-width: 720px;
+  font-size: 18px;
+  line-height: 1.9;
+  letter-spacing: 0.3px;
+}
+
+.home-ai-hero .ai-hero-actions { margin-top: 26px; }
+
+.home-ai-hero .hero-ai-btn {
+  padding: 12px 30px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 3px;      /* 四个字，字距松开一点更像主按钮 */
+}
+
+/* 两行小字整段隐藏（内容也由脚本移除，双保险） */
+.home-ai-hero .ai-hero-tag,
+.home-ai-hero .hero-ai-hint { display: none !important; }
+
+@media (max-width: 1280px) {
+  .home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 340px; }
+  .home-ai-hero .ai-hero-title { font-size: 36px; }
+  .home-ai-hero .ai-hero-sub { font-size: 17px; }
+}
+@media (max-width: 1024px) {
+  .home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 320px; }
+  .home-ai-hero .ai-hero-title { font-size: 32px; letter-spacing: 1.5px; }
+  .home-ai-hero .ai-hero-sub { font-size: 16px; }
+}
+@media (max-width: 900px) {
+  .home-ai-hero .ai-hero-title { white-space: normal; font-size: 28px; }
+  .home-ai-hero .ai-hero-sub { font-size: 15px; }
+  .home-ai-hero .hero-ai-btn { font-size: 17px; }
+}
+@media (max-width: 480px) {
+  .home-ai-hero .ai-hero-title { font-size: 23px; }
+  .home-ai-hero .hero-ai-btn { font-size: 16px; letter-spacing: 2px; }
+}
+
+
+/* 首页主视觉区域的标题、说明和按钮尺寸。 */
+.home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 430px; }
+.home-ai-hero .ai-hero-inner { grid-template-columns: minmax(720px, 1.08fr) minmax(360px, .92fr); }
+.home-ai-hero .ai-hero-copy { padding: 40px 24px 40px max(40px, calc((100vw - 1400px) / 2 + 40px)); max-width: 1010px; }
+
+.home-ai-hero .ai-hero-title {
+  font-family: "NotoSansSCEmbedded", "Source Han Sans SC", "Noto Sans SC", "思源黑体", "Source Han Sans CN", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+.home-ai-hero .ai-hero-sub { margin-top: 18px; max-width: 780px; font-size: 24px; line-height: 1.85; }
+.home-ai-hero .ai-hero-actions { margin-top: 30px; }
+.home-ai-hero .hero-ai-btn {
+  font-family: "NotoSansSCEmbedded", "Source Han Sans SC", "Noto Sans SC", "思源黑体", "Source Han Sans CN", "Microsoft YaHei", "PingFang SC", sans-serif;
+  padding: 16px 46px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  gap: 0;
+}
+@media (max-width: 1400px) {
+  .home-ai-hero .ai-hero-inner { grid-template-columns: minmax(600px, 1.05fr) minmax(340px, .95fr); }
+  .home-ai-hero .ai-hero-title { font-size: 56px; }
+  .home-ai-hero .ai-hero-sub { font-size: 21px; }
+}
+@media (max-width: 1100px) {
+  .home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 380px; }
+  .home-ai-hero .ai-hero-title { font-size: 44px; }
+  .home-ai-hero .ai-hero-sub { font-size: 19px; }
+  .home-ai-hero .hero-ai-btn { font-size: 19px; padding: 13px 34px; }
+}
+@media (max-width: 900px) {
+  .home-ai-hero .ai-hero-title { white-space: normal; font-size: 34px; }
+  .home-ai-hero .ai-hero-sub { font-size: 17px; }
+}
+
+
+/* 文案靠左，按钮在标题和介绍下方居中。 */
+.home-ai-hero .ai-hero-copy {
+  padding: 40px 24px 40px max(28px, calc((100vw - 1560px) / 2 + 28px));
+  width: max-content;              /* 收成标题那么宽，按钮才好居中 */
+  max-width: min(96vw, 860px);
+  align-items: flex-start;
+}
+.home-ai-hero .ai-hero-sub { max-width: 100%; }
+.home-ai-hero .ai-hero-actions {
+  width: 100%;
+  justify-content: center;         /* 按钮居中在标题和介绍下面 */
+}
+@media (max-width: 900px) {
+  .home-ai-hero .ai-hero-copy { width: auto; max-width: none; }
+}
+
+
+/* 首页区块之间及探究文案内部的纵向间距。 */
+@media (min-width: 769px) {
+  /* 顶部主视觉、实验卡片和底部探究区之间的间距。 */
+  .home-page .home-experiments { padding-top: 84px; padding-bottom: 128px; }
+  .experiment-cards { gap: 32px; }
+  /* 底部探究区内边距。 */
+  .home-ai-hero, .home-ai-hero .ai-hero-inner { min-height: 470px; }
+  .home-ai-hero .ai-hero-copy { padding-top: 56px; padding-bottom: 56px; }
+  .home-ai-hero .ai-hero-sub { margin-top: 22px; }
+  .home-ai-hero .ai-hero-actions { margin-top: 40px; }
+}
+
+@media (max-width: 768px) {
+  .home-page .home-experiments { padding-top: 36px; padding-bottom: 76px; }
+  .home-ai-hero .ai-hero-copy { padding-top: 48px; padding-bottom: 40px; }
+  .home-ai-hero .ai-hero-sub { margin-top: 18px; }
+  .home-ai-hero .ai-hero-actions { margin-top: 32px; }
+}
+
+/* 窄屏修复：上面那条 minmax(600px…) 的栅格在手机上会把文案挤出屏幕
+   （被 .home-ai-hero 的 overflow:hidden 裁掉），这里改回单列上下堆叠 */
+@media (max-width: 940px) {
+  .home-ai-hero .ai-hero-inner { grid-template-columns: 1fr; }
+  .home-ai-hero .ai-hero-copy { width: auto; max-width: none; }
+}

@@ -1,0 +1,15 @@
+
+
+/* ===== 首页顶部大图：英文用 Times，介绍用思源宋体 ===== */
+.home-hero .hero-tag {
+  font-family: "Times New Roman", Times,  serif !important;
+  letter-spacing: 3px;
+}
+.home-hero .home-subtitle,
+.home-hero .home-title {
+  font-family: "SourceHanSerifEmbedded", "Source Han Serif SC", "思源宋体",
+               "Noto Serif SC", "Source Han Serif CN", SimSun, serif !important;
+}
+
+/* ===== 三个实验卡片右上角的进度角标：整块不显示 ===== */
+.experiment-card .askz-badges { display: none !important; }

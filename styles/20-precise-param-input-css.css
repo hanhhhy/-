@@ -1,0 +1,6 @@
+
+#lineSimPage .precise-param-editor,#3dSimPage .precise-param-editor{display:flex;align-items:center;gap:6px;margin-top:6px}
+#lineSimPage .precise-param-editor input,#3dSimPage .precise-param-editor input{box-sizing:border-box;flex:1;min-width:0;padding:4px 6px;border:1px solid var(--border,#cbd5e1);border-radius:5px;background:var(--surface,#fff);color:inherit;font:inherit;font-size:12px}
+#lineSimPage .precise-param-editor input:focus,#3dSimPage .precise-param-editor input:focus{outline:2px solid var(--accent,#3381ff);outline-offset:1px}
+#lineSimPage .precise-param-editor input[aria-invalid="true"],#3dSimPage .precise-param-editor input[aria-invalid="true"]{border-color:#d64545;background:#fff4f4}
+#lineSimPage .precise-param-editor .precise-unit,#3dSimPage .precise-param-editor .precise-unit{font-size:11px;white-space:nowrap;color:var(--text-hint,#6b7280)}
